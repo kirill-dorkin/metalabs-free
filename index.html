@@ -1,0 +1,2440 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Создаем ваш первый сайт за один урок</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f8fafc;
+      color: #334155;
+      line-height: 1.6;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    .presentation {
+      width: 100%;
+      max-width: 1280px;
+      height: calc(100vh - 120px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .slide-container {
+      display: none;
+      /* Скрыты по умолчанию */
+      width: 100%;
+      height: 100%;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.06);
+      padding: 56px 64px;
+      flex-direction: column;
+      position: relative;
+      overflow-y: auto;
+    }
+
+    .slide-container.active {
+      display: flex !important;
+      /* Показываем только активный слайд */
+    }
+
+    .slide-number {
+      position: absolute;
+      top: 24px;
+      right: 32px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #94a3b8;
+      letter-spacing: 0.05em;
+    }
+
+    /* Slide 1 — Title */
+    .slide-title {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: #ffffff;
+    }
+
+    .slide-title .title-icon {
+      width: 80px;
+      height: 80px;
+      background: #2563eb;
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+      box-shadow: 0 8px 32px rgba(37, 99, 235, 0.15);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .slide-title .title-icon i {
+      font-size: 38px;
+      color: #ffffff;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .slide-title h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #1e293b;
+      line-height: 1.2;
+      max-width: 600px;
+      margin-bottom: 16px;
+    }
+
+    .slide-title h1 .gradient-blue {
+      background: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .slide-title .subtitle {
+      font-size: 1.15rem;
+      color: #64748b;
+      max-width: 500px;
+      font-weight: 400;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .slide-title .title-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .slide-title .title-tag {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 24px;
+      padding: 10px 22px;
+      font-size: 0.9rem;
+      color: #475569;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .slide-title .title-tag i {
+      font-size: 15px;
+    }
+
+    .slide-title .title-tag.blue i {
+      color: #2563eb;
+    }
+
+    .slide-title .title-tag.green i {
+      color: #16a34a;
+    }
+
+    .slide-title .title-tag.gold i {
+      color: #d97706;
+    }
+
+    /* Common headings */
+    h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    h2 i {
+      color: #2563eb;
+      font-size: 1.5rem;
+    }
+
+    /* Slide 2 — About me */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      flex: 1;
+      align-items: center;
+    }
+
+    .about-header {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .about-logo {
+      width: 100px;
+      height: 100px;
+      border-radius: 20px;
+      object-fit: cover;
+      border: 2px solid #e2e8f0;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+    }
+
+    .about-header-content h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 8px;
+    }
+
+    .about-header-content .tagline {
+      font-size: 1rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .about-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 40px;
+    }
+
+    .about-list li {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: #1e293b;
+      line-height: 1.4;
+    }
+
+    .about-list li .about-icon {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      background: #eff6ff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .about-list li .about-icon i {
+      font-size: 16px;
+      color: #2563eb;
+    }
+
+    .about-list li .about-icon.green {
+      background: #f0fdf4;
+    }
+
+    .about-list li .about-icon.green i {
+      color: #16a34a;
+    }
+
+    .about-list li .about-icon.gold {
+      background: #fefce8;
+    }
+
+    .about-list li .about-icon.gold i {
+      color: #d97706;
+    }
+
+    .about-experience {
+      background: #fefce8;
+      border: 2px solid #fde68a;
+      border-radius: 14px;
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .melbet-logo {
+      width: 80px;
+      height: 80px;
+      min-width: 80px;
+      border-radius: 12px;
+      object-fit: contain;
+      background: #ffffff;
+      padding: 6px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .experience-text h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 4px;
+    }
+
+    .experience-text p {
+      font-size: 0.9rem;
+      color: #64748b;
+      line-height: 1.4;
+    }
+
+    .experience-text .role-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ffffff;
+      border: 1px solid #fde68a;
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 0.8rem;
+      color: #d97706;
+      font-weight: 600;
+      margin-top: 6px;
+    }
+
+    .about-links {
+      display: flex;
+      gap: 16px;
+      margin-top: 4px;
+    }
+
+    .about-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 22px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1e293b;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .about-link:hover {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      color: #2563eb;
+    }
+
+    .about-link i {
+      font-size: 20px;
+    }
+
+    .about-link.instagram i {
+      color: #e1306c;
+    }
+
+    .about-link.website i {
+      color: #2563eb;
+    }
+
+    /* Slide 2 — Intro */
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      flex: 1;
+      align-items: center;
+    }
+
+    .question-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: box-shadow 0.2s;
+    }
+
+    .question-card:hover {
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+    }
+
+    .question-card .q-icon {
+      width: 48px;
+      height: 48px;
+      background: #eff6ff;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .question-card .q-icon i {
+      font-size: 20px;
+      color: #2563eb;
+    }
+
+    .question-card h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .question-card p {
+      color: #64748b;
+      font-size: 0.95rem;
+    }
+
+    .intro-image {
+      width: 100%;
+      height: 340px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 1px solid #e2e8f0;
+    }
+
+    /* Slide 3 — Intro round */
+    .intro-round {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      flex: 1;
+      align-items: stretch;
+    }
+
+    .intro-round-left {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .intro-round-left .intro-description {
+      font-size: 1.15rem;
+      color: #475569;
+      line-height: 1.7;
+      margin-bottom: 4px;
+    }
+
+    .intro-round-left .intro-note {
+      background: #fefce8;
+      border: 1px solid #fde68a;
+      border-radius: 14px;
+      padding: 20px 24px;
+      font-size: 0.95rem;
+      color: #92400e;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      line-height: 1.6;
+    }
+
+    .intro-round-left .intro-note i {
+      font-size: 20px;
+      color: #d97706;
+      margin-top: 2px;
+    }
+
+    .intro-format {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: auto;
+    }
+
+    .format-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 22px;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .format-item.offline {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1e40af;
+    }
+
+    .format-item.online {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+    }
+
+    .format-item i {
+      font-size: 22px;
+    }
+
+    .intro-questions {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      justify-content: center;
+    }
+
+    .intro-question {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 28px;
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      transition: box-shadow 0.2s;
+      flex: 1;
+    }
+
+    .intro-question:hover {
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+    }
+
+    .intro-question .q-number {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      background: #2563eb;
+      color: #ffffff;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .intro-question .q-content h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 4px;
+    }
+
+    .intro-question .q-content p {
+      font-size: 0.9rem;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    /* Slide 3 — Intro */
+    .restaurant-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      flex: 1;
+      align-items: stretch;
+    }
+
+    .analogy-card {
+      border-radius: 12px;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .analogy-card.frontend {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+    }
+
+    .analogy-card.backend {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+    }
+
+    .analogy-card .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .analogy-card .card-header i {
+      font-size: 28px;
+    }
+
+    .analogy-card.frontend .card-header i {
+      color: #2563eb;
+    }
+
+    .analogy-card.backend .card-header i {
+      color: #475569;
+    }
+
+    .analogy-card h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .analogy-card p {
+      color: #475569;
+      font-size: 1rem;
+    }
+
+    .analogy-card .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .tag {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 0.8rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .restaurant-image {
+      grid-column: 1 / -1;
+      width: 100%;
+      height: 140px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 1px solid #e2e8f0;
+    }
+
+    /* Slide 4 — Expectations */
+    .expect-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      flex: 1;
+    }
+
+    .expect-top {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .expect-top .expect-text {
+      font-size: 1.15rem;
+      color: #475569;
+      line-height: 1.7;
+    }
+
+    .expect-top .expect-text strong {
+      color: #1e293b;
+      font-weight: 600;
+    }
+
+    .expect-warning {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 14px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      line-height: 1.6;
+      font-size: 0.95rem;
+      color: #1e40af;
+      margin-top: 4px;
+    }
+
+    .expect-warning i {
+      font-size: 22px;
+      color: #2563eb;
+      margin-top: 2px;
+    }
+
+    .expect-bottom {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      flex: 1;
+    }
+
+    .expect-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      transition: box-shadow 0.2s;
+    }
+
+    .expect-card:hover {
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+    }
+
+    .expect-card .exp-icon {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .expect-card .exp-icon.blue {
+      background: #eff6ff;
+    }
+
+    .expect-card .exp-icon.blue i {
+      color: #2563eb;
+      font-size: 20px;
+    }
+
+    .expect-card .exp-icon.green {
+      background: #f0fdf4;
+    }
+
+    .expect-card .exp-icon.green i {
+      color: #16a34a;
+      font-size: 20px;
+    }
+
+    .expect-card .exp-icon.gold {
+      background: #fefce8;
+    }
+
+    .expect-card .exp-icon.gold i {
+      color: #d97706;
+      font-size: 20px;
+    }
+
+    .expect-card .exp-icon.purple {
+      background: #faf5ff;
+    }
+
+    .expect-card .exp-icon.purple i {
+      color: #9333ea;
+      font-size: 20px;
+    }
+
+    .expect-card .exp-content h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 4px;
+    }
+
+    .expect-card .exp-content p {
+      font-size: 0.9rem;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    /* Slide 4 — Intro */
+    .fullstack-content {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 48px;
+      flex: 1;
+      align-items: center;
+    }
+
+    .fullstack-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .stack-diagram {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .stack-layer {
+      padding: 20px 24px;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .stack-layer.top {
+      background: #eff6ff;
+      color: #2563eb;
+      border: 2px solid #bfdbfe;
+    }
+
+    .stack-layer.middle {
+      background: #f0fdf4;
+      color: #16a34a;
+      border: 2px solid #bbf7d0;
+    }
+
+    .stack-layer.bottom {
+      background: #f1f5f9;
+      color: #475569;
+      border: 2px solid #cbd5e1;
+    }
+
+    .stack-bridge {
+      text-align: center;
+      color: #2563eb;
+      font-size: 1.5rem;
+    }
+
+    .fullstack-text p {
+      font-size: 1.05rem;
+      color: #475569;
+      margin-bottom: 20px;
+    }
+
+    .fullstack-text .highlight {
+      background: #eff6ff;
+      border-left: 4px solid #2563eb;
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      color: #1e293b;
+      font-weight: 500;
+    }
+
+    /* Slide 5 — Three pillars */
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 28px;
+      flex: 1;
+      align-items: stretch;
+    }
+
+    .pillar-card {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 36px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 18px;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+
+    .pillar-card:hover {
+      box-shadow: 0 8px 32px rgba(37, 99, 235, 0.1);
+      transform: translateY(-4px);
+    }
+
+    .pillar-card .pillar-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pillar-card .pillar-icon i {
+      font-size: 36px;
+    }
+
+    .pillar-card.html .pillar-icon {
+      background: #fff7ed;
+    }
+
+    .pillar-card.html .pillar-icon i {
+      color: #ea580c;
+    }
+
+    .pillar-card.css .pillar-icon {
+      background: #eff6ff;
+    }
+
+    .pillar-card.css .pillar-icon i {
+      color: #2563eb;
+    }
+
+    .pillar-card.js .pillar-icon {
+      background: #fefce8;
+    }
+
+    .pillar-card.js .pillar-icon i {
+      color: #d97706;
+    }
+
+    .pillar-card .pillar-tag {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+    }
+
+    .pillar-card.html .pillar-tag {
+      color: #ea580c;
+    }
+
+    .pillar-card.css .pillar-tag {
+      color: #2563eb;
+    }
+
+    .pillar-card.js .pillar-tag {
+      color: #d97706;
+    }
+
+    .pillar-card .pillar-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .pillar-card .pillar-desc {
+      font-size: 0.9rem;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    .pillar-card .pillar-example {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 0.8rem;
+      color: #475569;
+      font-weight: 500;
+      width: 100%;
+    }
+
+    .pillar-card .pillar-img {
+      width: 100%;
+      height: 120px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 1px solid #e2e8f0;
+      margin-top: auto;
+    }
+
+    .pillars-intro {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .pillars-intro p {
+      font-size: 1.1rem;
+      color: #475569;
+      line-height: 1.6;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .pillars-intro strong {
+      color: #1e293b;
+    }
+
+    .pillar-full-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      margin: 0;
+      padding: 0;
+      border-radius: 12px;
+      border: 2px solid #e2e8f0;
+    }
+
+    .slide-full-img {
+      padding: 0 !important;
+    }
+
+    /* Slide 6 — House HTML */
+    .house-slide {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      flex: 1;
+      align-items: stretch;
+    }
+
+    .house-left {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .house-left .house-text {
+      font-size: 1.15rem;
+      color: #475569;
+      line-height: 1.7;
+    }
+
+    .house-left .house-text strong {
+      color: #1e293b;
+      font-weight: 600;
+    }
+
+    .house-left .house-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 24px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      width: fit-content;
+    }
+
+    .house-left .house-badge.blue {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1e40af;
+    }
+
+    .house-left .house-badge.green {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+    }
+
+    .house-left .house-badge.gold {
+      background: #fefce8;
+      border: 1px solid #fde68a;
+      color: #92400e;
+    }
+
+    .house-left .house-badge i {
+      font-size: 16px;
+    }
+
+    .house-right {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      justify-content: center;
+    }
+
+    .house-element {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      transition: box-shadow 0.2s;
+    }
+
+    .house-element:hover {
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+    }
+
+    .house-element .he-icon {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .house-element .he-icon i {
+      font-size: 18px;
+    }
+
+    .house-element .he-icon.orange {
+      background: #fff7ed;
+    }
+
+    .house-element .he-icon.orange i {
+      color: #ea580c;
+    }
+
+    .house-element .he-icon.blue {
+      background: #eff6ff;
+    }
+
+    .house-element .he-icon.blue i {
+      color: #2563eb;
+    }
+
+    .house-element .he-icon.green {
+      background: #f0fdf4;
+    }
+
+    .house-element .he-icon.green i {
+      color: #16a34a;
+    }
+
+    .house-element .he-icon.gold {
+      background: #fefce8;
+    }
+
+    .house-element .he-icon.gold i {
+      color: #d97706;
+    }
+
+    .house-element .he-icon.purple {
+      background: #faf5ff;
+    }
+
+    .house-element .he-icon.purple i {
+      color: #9333ea;
+    }
+
+    .house-element .he-content h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 4px;
+    }
+
+    .house-element .he-content p {
+      font-size: 0.9rem;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    /* Slide 7 — House CSS */
+    .house-badge.css-badge {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1e40af;
+    }
+
+    /* Slide 8 — House JS */
+    .house-badge.js-badge {
+      background: #fefce8;
+      border: 1px solid #fde68a;
+      color: #92400e;
+    }
+
+    /* Slide 5 — Intro */
+    .ai-content {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 40px;
+      flex: 1;
+      align-items: center;
+    }
+
+    .ai-text p {
+      font-size: 1.05rem;
+      color: #475569;
+      margin-bottom: 16px;
+    }
+
+    .ai-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .stat-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .stat-card .stat-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #2563eb;
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-top: 4px;
+    }
+
+    .ai-image {
+      width: 100%;
+      height: 320px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 1px solid #e2e8f0;
+    }
+
+    /* Slide 6 — Prompt rules */
+    .rules-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      flex: 1;
+      align-content: center;
+    }
+
+    .rule-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 24px 16px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .rule-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.1);
+    }
+
+    .rule-number {
+      width: 36px;
+      height: 36px;
+      background: #2563eb;
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .rule-card i {
+      font-size: 24px;
+      color: #2563eb;
+    }
+
+    .rule-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .rule-card p {
+      font-size: 0.82rem;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    /* Slide 7 — Practice */
+    .practice-slide {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: #ffffff;
+    }
+
+    .practice-slide h2 {
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+
+    .practice-slide .practice-text {
+      font-size: 1.3rem;
+      color: #475569;
+      max-width: 600px;
+      margin-bottom: 40px;
+    }
+
+    .practice-icon {
+      width: 96px;
+      height: 96px;
+      background: #2563eb;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 32px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .practice-icon i {
+      font-size: 42px;
+      color: #ffffff;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    /* Slide 8 — Prompt template */
+    .prompt-block {
+      background: #1e293b;
+      border-radius: 12px;
+      padding: 48px 36px 28px 36px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.82rem;
+      color: #e2e8f0;
+      line-height: 1.7;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      position: relative;
+      overflow-y: auto;
+      text-align: left;
+    }
+
+    .prompt-block::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 40px;
+      background: #334155;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .prompt-dots {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      display: flex;
+      gap: 8px;
+      z-index: 1;
+    }
+
+    .prompt-dots span {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .prompt-dots span:nth-child(1) {
+      background: #ef4444;
+    }
+
+    .prompt-dots span:nth-child(2) {
+      background: #f59e0b;
+    }
+
+    .prompt-dots span:nth-child(3) {
+      background: #22c55e;
+    }
+
+    .prompt-block .prompt-label {
+      position: absolute;
+      top: 10px;
+      right: 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      color: #94a3b8;
+      z-index: 1;
+    }
+
+    .prompt-block code {
+      flex: 1;
+      font-size: 0.82rem;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .prompt-block .placeholder {
+      color: #60a5fa;
+      font-weight: 600;
+      background: rgba(37, 99, 235, 0.2);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .copy-hint {
+      margin-top: 12px;
+      font-size: 0.9rem;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .copy-hint i {
+      color: #2563eb;
+    }
+
+    /* Slide 9 — Steps */
+    .steps-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      flex: 1;
+      align-content: center;
+    }
+
+    .step-item {
+      display: flex;
+      gap: 20px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 24px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      background: #2563eb;
+      color: #ffffff;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .step-content h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+
+    .step-content p {
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+
+    .step-item .step-icon {
+      margin-left: auto;
+      font-size: 24px;
+      color: #cbd5e1;
+      align-self: center;
+    }
+
+    /* Slide 10 — Perspectives */
+    .perspectives-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      flex: 1;
+      align-content: center;
+    }
+
+    .perspective-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 32px 24px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .perspective-card .p-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .perspective-card:nth-child(1) .p-icon {
+      background: #eff6ff;
+    }
+
+    .perspective-card:nth-child(1) .p-icon i {
+      color: #2563eb;
+    }
+
+    .perspective-card:nth-child(2) .p-icon {
+      background: #f0fdf4;
+    }
+
+    .perspective-card:nth-child(2) .p-icon i {
+      color: #16a34a;
+    }
+
+    .perspective-card:nth-child(3) .p-icon {
+      background: #fef3c7;
+    }
+
+    .perspective-card:nth-child(3) .p-icon i {
+      color: #d97706;
+    }
+
+    .perspective-card .p-icon i {
+      font-size: 24px;
+    }
+
+    .perspective-card h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .perspective-card p {
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+
+    /* Slide 13 — Prompt structure */
+    .prompt-structure {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      flex: 1;
+    }
+
+    .ps-intro {
+      font-size: 1.15rem;
+      color: #475569;
+      line-height: 1.7;
+      margin-bottom: 8px;
+    }
+
+    .ps-intro strong {
+      color: #1e293b;
+      font-weight: 600;
+    }
+
+    .ps-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex: 1;
+    }
+
+    .ps-step {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px 20px;
+      transition: box-shadow 0.2s;
+    }
+
+    .ps-step:hover {
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+    }
+
+    .ps-step-num {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      background: #2563eb;
+      color: #ffffff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .ps-step-content h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 2px;
+    }
+
+    .ps-step-content p {
+      font-size: 0.85rem;
+      color: #64748b;
+      line-height: 1.4;
+    }
+
+    /* Slide 11 — Q&A */
+    .qa-slide {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .qa-slide h2 {
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+
+    .qa-icon {
+      width: 80px;
+      height: 80px;
+      background: #eff6ff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .qa-icon i {
+      font-size: 36px;
+      color: #2563eb;
+    }
+
+    .qa-text {
+      font-size: 1.15rem;
+      color: #64748b;
+      max-width: 500px;
+      margin-bottom: 32px;
+    }
+
+    .qa-topics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      max-width: 600px;
+    }
+
+    .qa-topic {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 24px;
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      color: #475569;
+    }
+
+    /* Slide 12 — Final */
+    .final-slide {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: #eff6ff;
+    }
+
+    .final-slide h2 {
+      justify-content: center;
+      font-size: 2.75rem;
+      color: #1e293b;
+    }
+
+    .final-icon {
+      width: 88px;
+      height: 88px;
+      background: #2563eb;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+
+    .final-icon i {
+      font-size: 40px;
+      color: #ffffff;
+    }
+
+    .final-text {
+      font-size: 1.2rem;
+      color: #475569;
+      max-width: 560px;
+      margin-bottom: 32px;
+    }
+
+    .final-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 24px;
+      padding: 10px 24px;
+      color: #16a34a;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    /* Стили панели управления для светлой темы */
+    .controls-container {
+      margin-top: 24px;
+      width: 100%;
+      max-width: 600px;
+      background: #ffffff;
+      padding: 12px 24px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.05);
+    }
+
+    .nav-btn {
+      background: #2563eb;
+      color: #ffffff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: background 0.2s, opacity 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-btn:hover {
+      background: #1d4ed8;
+    }
+
+    .nav-btn:disabled {
+      background: #cbd5e1;
+      color: #94a3b8;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .progress-bar-wrapper {
+      flex: 1;
+      background: #f1f5f9;
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: #2563eb;
+      width: 8.33%;
+      transition: width 0.3s ease;
+    }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .rules-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 900px) {
+      body {
+        height: auto;
+        overflow: auto;
+      }
+
+      .presentation {
+        height: auto;
+      }
+
+      .slide-container {
+        padding: 40px 32px;
+        height: auto;
+        min-height: 600px;
+      }
+
+      .intro-grid,
+      .restaurant-layout,
+      .fullstack-content,
+      .ai-content,
+      .steps-list,
+      .perspectives-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .rules-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .slide-title h1 {
+        font-size: 2rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .slide-container {
+        padding: 32px 20px;
+      }
+
+      .rules-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Стиль кнопки копирования внутри промпта */
+    .copy-prompt-btn {
+      position: absolute;
+      top: 52px;
+      /* Чуть ниже верхней технической плашки */
+      right: 16px;
+      background: #334155;
+      color: #94a3b8;
+      border: 1px solid #475569;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      z-index: 2;
+    }
+
+    .copy-prompt-btn:hover {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #2563eb;
+    }
+
+    .copy-prompt-btn.copied {
+      background: #16a34a;
+      color: #ffffff;
+      border-color: #16a34a;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="presentation">
+
+    <section class="slide-container slide-title active">
+      <span class="slide-number">01 / 16</span>
+      <div class="title-icon">
+        <i class="fa-solid fa-bolt"></i>
+      </div>
+      <h1>Сайт за один урок.<br><span class="gradient-blue">С помощью ИИ.</span></h1>
+      <p class="subtitle">Без кода. Без опыта. Без долгого обучения.</p>
+      <div class="title-tags">
+        <span class="title-tag blue"><i class="fa-solid fa-bolt"></i> Быстро</span>
+        <span class="title-tag green"><i class="fa-solid fa-robot"></i> С помощью ИИ</span>
+        <span class="title-tag gold"><i class="fa-solid fa-sack-dollar"></i> Практично</span>
+      </div>
+    </section>
+
+    <section class="slide-container">
+      <span class="slide-number">02 / 16</span>
+      <h2><i class="fa-solid fa-user-tie"></i> Обо мне</h2>
+      <div class="about-grid">
+        <div class="about-header">
+          <img class="about-logo" src="logo.jpeg" alt="MicroStudio logo">
+          <div class="about-header-content">
+            <h3>Основатель digital-агентства <strong>MicroStudio</strong></h3>
+            <p class="tagline">Создаю цифровые продукты, которые приносят результат</p>
+          </div>
+        </div>
+
+        <ul class="about-list">
+          <li>
+            <span class="about-icon"><i class="fa-solid fa-globe"></i></span>
+            <span>Создание сайтов и приложений</span>
+          </li>
+          <li>
+            <span class="about-icon"><i class="fa-solid fa-gears"></i></span>
+            <span>Скрипты оптимизации бизнес-процессов и логики</span>
+          </li>
+          <li>
+            <span class="about-icon green"><i class="fa-solid fa-brain"></i></span>
+            <span>Интеграция ИИ в бизнес</span>
+          </li>
+          <li>
+            <span class="about-icon gold"><i class="fa-solid fa-money-bill-trend-up"></i></span>
+            <span>В общем — всё, что приносит деньги сейчас 💰</span>
+          </li>
+        </ul>
+
+        <div class="about-experience">
+          <img class="melbet-logo" src="melbet.png" alt="MelBet logo">
+          <div class="experience-text">
+            <h4>Прежде чем основать MicroStudio</h4>
+            <p>Я работал разработчиком в компании MelBet — получил опыт в крупной IT-компании и понял, что хочу своё дело</p>
+            <span class="role-badge"><i class="fa-solid fa-code"></i> Разработчик</span>
+          </div>
+        </div>
+
+        <div class="about-links">
+          <a href="https://www.instagram.com/microstudio_official/" target="_blank" class="about-link instagram">
+            <i class="fa-brands fa-instagram"></i> Инстаграм компании
+          </a>
+          <a href="https://microstudio-official.vercel.app" target="_blank" class="about-link website">
+            <i class="fa-solid fa-globe"></i> Сайт компании
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide-container">
+      <span class="slide-number">03 / 16</span>
+      <h2><i class="fa-solid fa-users"></i> Знакомство</h2>
+      <div class="intro-round">
+        <div class="intro-round-left">
+          <p class="intro-description">Мы проводим короткий раунд знакомства — 10 минут, каждый по очереди отвечает на три вопроса. Это поможет нам всем лучше узнать друг друга и почувствовать себя комфортнее.</p>
+          <div class="intro-note">
+            <i class="fa-solid fa-face-smile"></i>
+            <span>Не переживайте, если вам некомфортно отвечать — это нормально. Просто представьтесь и расскажите немного о себе.</span>
+          </div>
+          <div class="intro-format">
+            <div class="format-item offline">
+              <i class="fa-solid fa-people-arrows"></i> Сначала — офлайн по очереди
+            </div>
+            <div class="format-item online">
+              <i class="fa-solid fa-microphone"></i> Затем — онлайн по очереди
+            </div>
+          </div>
+        </div>
+        <div class="intro-questions">
+          <div class="intro-question">
+            <div class="q-number">1</div>
+            <div class="q-content">
+              <h3>Как вас зовут?</h3>
+              <p>Коротко представьтесь — имя и город</p>
+            </div>
+          </div>
+          <div class="intro-question">
+            <div class="q-number">2</div>
+            <div class="q-content">
+              <h3>Какой у вас был опыт работы с компьютером?</h3>
+              <p>Даже если печатать не умеете — это нормально, мы все с чего-то начинали</p>
+            </div>
+          </div>
+          <div class="intro-question">
+            <div class="q-number">3</div>
+            <div class="q-content">
+              <h3>Почему вы решили учить программирование?</h3>
+              <p>Что привело вас на этот урок — любопытство, карьера, свой проект?</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide-container">
+      <span class="slide-number">04 / 16</span>
+      <h2><i class="fa-solid fa-hourglass-half"></i> Честно об ожиданиях</h2>
+      <div class="expect-grid">
+        <div class="expect-top">
+          <p class="expect-text">Каким бы хорошим учителем ни был и какими бы умными ни были вы — <strong>за один час невозможно сделать из вас программиста</strong>.</p>
+          <p class="expect-text">Невозможно сжать в час то, что в вузах изучают 4–5 лет.</p>
+          <div class="expect-warning">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>На нашем курсе 5-летняя программа сжимается до 8 месяцев — и оставляем только то, что реально нужно в работе.</span>
+          </div>
+        </div>
+        <div class="expect-bottom">
+          <div class="expect-card">
+            <div class="exp-icon blue"><i class="fa-solid fa-face-smile"></i></div>
+            <div class="exp-content">
+              <h3>Это нормально — если что-то не получается с первого раза</h3>
+              <p>Многие из вас впервые пробуют программировать. Запутаться, ошибиться, не понять — это часть процесса</p>
+            </div>
+          </div>
+          <div class="expect-card">
+            <div class="exp-icon green"><i class="fa-solid fa-hands-helping"></i></div>
+            <div class="exp-content">
+              <h3>Поддержка на каждом шаге</h3>
+              <p>На всех занятиях есть саппорты — они помогут, подскажут и поддержат, если что-то не получается</p>
+            </div>
+          </div>
+          <div class="expect-card">
+            <div class="exp-icon gold"><i class="fa-solid fa-chart-line"></i></div>
+            <div class="exp-content">
+              <h3>Результат будет</h3>
+              <p>Не сегодня, не завтра, но каждый шаг приближает вас к цели. Главное — не останавливаться</p>
+            </div>
+          </div>
+          <div class="expect-card">
+            <div class="exp-icon purple"><i class="fa-solid fa-shield-halved"></i></div>
+            <div class="exp-content">
+              <h3>Без давления</h3>
+              <p>Здесь нет оценок и экзаменов. Учитесь в своём темпе, задавайте вопросы, не бойтесь ошибаться</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide-container slide-full-img">
+      <span class="slide-number">05 / 16</span>
+      <img class="pillar-full-img" src="t5.png" alt="Три кита веб-разработки">
+    </section>
+
+    <section class="slide-container">
+      <span class="slide-number">06 / 16</span>
+      <h2><i class="fa-solid fa-hammer"></i> Как устроен сайт — аналогия с домом</h2>
+      <p class="house-text" style="margin-bottom: 24px;">Представьте, что создание сайта — это <strong>строительство дома</strong>. Каждый слой добавляет новый уровень.</p>
+      <div class="house-slide">
+        <div class="house-left">
+          <div class="house-badge blue">
+            <i class="fa-solid fa-file-lines"></i> Только HTML
+          </div>
+          <p class="house-text">Это <strong>скелет дома</strong> — фундамент, стены, перекрытия, перегородки. Дом уже существует, в нём можно жить, но выглядит он как стройка.</p>
+        </div>
+        <div class="house-right">
+          <div class="house-element">
+            <div class="he-icon orange"><i class="fa-solid fa-cubes"></i></div>
+            <div class="he-content">
+              <h3>Фундамент</h3>
+              <p>HTML-теги — это фундамент. <code>&lt;h1&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;img&gt;</code> — каждый тег несёт свою нагрузку</p>
+            </div>
+          </div>
+          <div class="house-element">
+            <div class="he-icon blue"><i class="fa-solid fa-border-all"></i></div>
+            <div class="he-content">
+              <h3>Стены и перегородки</h3>
+              <p>Структура страницы: шапка, контент, боковая панель, подвал — всё разбито на логические блоки</p>
+            </div>
+          </div>
+          <div class="house-element">
+            <div class="he-icon green"><i class="fa-solid fa-door-open"></i></div>
+            <div class="he-content">
+              <h3>Двери и окна</h3>
+              <p>Ссылки и кнопки — это двери и окна. Они ведут куда-то или открывают что-то</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide-container slide-full-img">
+      <span class="slide-number">07 / 16</span>
+      <img class="pillar-full-img" src="html.png" alt="Только HTML">
+    </section>
+
+    <section class="slide-container">
+      <span class="slide-number">08 / 16</span>
+      <h2><i class="fa-solid fa-paint-roller"></i> HTML + CSS — дом с отделкой</h2>
+      <p class="house-text" style="margin-bottom: 24px;">Добавляем <strong>CSS</strong> — и дом из стройки превращается в уютное жильё.</p>
+      <div class="house-slide">
+        <div class="house-left">
+          <div class="house-badge green">
+            <i class="fa-solid fa-palette"></i> HTML + CSS
+          </div>
+          <p class="house-text">CSS — это <strong>отделка</strong>: покраска стен, обои, напольное покрытие, светильники. Дом становится красивым и комфортным.</p>
+        </div>
+        <div class="house-right">
+          <div class="house-element">
+            <div class="he-icon blue"><i class="fa-solid fa-swatchbook"></i></div>
+            <div class="he-content">
+              <h3>Цвета и материалы</h3>
+              <p>Фон, цвета текста, границы — CSS задаёт палитру всего дома, как краска и обои</p>
+            </div>
+          </div>
+          <div class="house-element">
+            <div class="he-icon green"><i class="fa-solid fa-text-height"></i></div>
+            <div class="he-content">
+              <h3>Шрифты и размеры</h3>
+              <p>Размер заголовков, межстрочные интервалы — как выбор светильников и декора</p>
+            </div>
+          </div>
+          <div class="house-element">
+            <div class="he-icon gold"><i class="fa-solid fa-arrows-split-up-and-left"></i></div>
+            <div class="he-content">
+              <h3>Расположение элементов</h3>
+              <p>Отступы, сетка, flexbox — как расстановка мебели в уже готовых комнатах</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide-container slide-full-img">
+      <span class="slide-number">09 / 16</span>
+      <img class="pillar-full-img" src="html+css.png" alt="HTML + CSS">
+    </section>
+
+    <section class="slide-container">
+      <span class="slide-number">10 / 16</span>
+      <h2><i class="fa-solid fa-microchip"></i> HTML + CSS + JS — умный дом</h2>
+      <p class="house-text" style="margin-bottom: 24px;">Добавляем <strong>JavaScript</strong> — и дом становится умным, живым, реагирует на действия.</p>
+      <div class="house-slide">
+        <div class="house-left">
+          <div class="house-badge gold">
+            <i class="fa-solid fa-code"></i> HTML + CSS + JS
+          </div>
+          <p class="house-text">JS — это <strong>автоматизация и интерактив</strong>: кнопки света, автоматические шторы, датчики движения. Дом начинает «думать».</p>
+        </div>
+        <div class="house-right">
+          <div class="house-element">
+            <div class="he-icon purple"><i class="fa-solid fa-bolt"></i></div>
+            <div class="he-content">
+              <h3>Кнопки и события</h3>
+              <p>Нажал кнопку — включился свет. Клик по кнопке — открылось меню, появился попап</p>
+            </div>
+          </div>
+          <div class="house-element">
+            <div class="he-icon orange"><i class="fa-solid fa-rotate"></i></div>
+            <div class="he-content">
+              <h3>Анимации и переходы</h3>
+              <p>Плавное появление блоков при скролле, слайдеры, выпадающие списки — дом «оживает»</p>
+            </div>
+          </div>
+          <div class="house-element">
+            <div class="he-icon green"><i class="fa-solid fa-database"></i></div>
+            <div class="he-content">
+              <h3>Данные и логика</h3>
+              <p>Формы, валидация, загрузка данных — дом принимает решения на основе того, что происходит</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide-container slide-full-img">
+      <span class="slide-number">11 / 16</span>
+      <img class="pillar-full-img" src="html+css+js.png" alt="HTML + CSS + JS">
+    </section>
+
+    <section class="slide-container practice-slide">
+      <span class="slide-number">12 / 16</span>
+      <div class="practice-icon">
+        <i class="fa-solid fa-play"></i>
+      </div>
+      <h2><i class="fa-solid fa-flask"></i> Время практики</h2>
+      <p class="practice-text">Сейчас мы создадим ваш первый проект с помощью всего одного запроса</p>
+    </section>
+
+    <section class="slide-container">
+      <span class="slide-number">13 / 17</span>
+      <h2><i class="fa-solid fa-lightbulb"></i> Что такое ИИ и как строить промпт</h2>
+      <div class="prompt-structure">
+        <div class="ps-intro">
+          <p>ИИ — это не волшебство. Это инструмент, который понимает инструкции. Чем точнее инструкция — тем лучше результат. Эта инструкция называется <strong>промпт</strong>.</p>
+        </div>
+        <div class="ps-steps">
+          <div class="ps-step">
+            <div class="ps-step-num">1</div>
+            <div class="ps-step-content">
+              <h3>Роль</h3>
+              <p>Кем должен быть ИИ? «Действуй как веб-разработчик»</p>
+            </div>
+          </div>
+          <div class="ps-step">
+            <div class="ps-step-num">2</div>
+            <div class="ps-step-content">
+              <h3>Задача</h3>
+              <p>Что нужно сделать? «Напиши код для лендинга»</p>
+            </div>
+          </div>
+          <div class="ps-step">
+            <div class="ps-step-num">3</div>
+            <div class="ps-step-content">
+              <h3>Контекст</h3>
+              <p>Какие данные? Название, тематика, аудитория, структура</p>
+            </div>
+          </div>
+          <div class="ps-step">
+            <div class="ps-step-num">4</div>
+            <div class="ps-step-content">
+              <h3>Формат</h3>
+              <p>В каком виде ответ? Один HTML-файл, адаптивный, с анимациями</p>
+            </div>
+          </div>
+          <div class="ps-step">
+            <div class="ps-step-num">5</div>
+            <div class="ps-step-content">
+              <h3>Ограничения</h3>
+              <p>Цвета, шрифты, стиль — всё, что важно для результата</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide-container">
+      <span class="slide-number">14 / 17</span>
+      <h2><i class="fa-solid fa-copy"></i> Ваш идеальный промпт для ИИ</h2>
+      <div class="prompt-block" style="position: relative;">
+        <div class="prompt-dots">
+          <span></span><span></span><span></span>
+        </div>
+        <span class="prompt-label">prompt.txt</span>
+
+        <button class="copy-prompt-btn" id="copyBtn" title="Скопировать промпт">
+          <i class="fa-regular fa-copy"></i> Копировать
+        </button>
+
+        <code id="promptText">1. РОЛЬ: Действуй как профессиональный Fullstack-разработчик и веб-дизайнер.
+
+2. ЗАДАЧА: Напиши полностью готовый, валидный и красивый код для одного файла index.html. Это должен быть современный, интерактивный лендинг.
+
+3. КОНТЕКСТ И ДАННЫЕ:
+- Название проекта: <span class="placeholder">[Салон красоты "Gloss"]</span>
+- Тематика сайта: <span class="placeholder">[Стильные стрижки, укладки и премиальный маникюр]</span>
+- Целевая аудитория: <span class="placeholder">[Современные девушки, ценящие комфорт, высокое качество и свое время]</span>
+- Главный призыв к действию (CTA): На главном экране должна быть кнопка <span class="placeholder">["Записаться онлайн"]</span>, которая плавно прокручивает страницу вниз к секции <span class="placeholder">["Контакты"]</span>.
+- Структура секций (Контент): Добавь секции: <span class="placeholder">["О нас", "Наши услуги с ценами", "Преимущества", "Галерея работ" и "Контакты"]</span>.
+- Данные для подвала (Footer): Вставь контакты: <span class="placeholder">[г. Москва, ул. Красивая 1; Телефон: +7 (999) 000-00-00; Соцсети: @gloss_beauty]</span>.
+
+4. ФОРМАТ ОТВЕТА: Выдай ОДИН единый блок кода HTML. Внутри него должны быть подключены стили (Tailwind CSS через CDN) и минимальный JavaScript для плавной прокрутки. Все картинки должны быть качественными фотографиями из Unsplash (подбирай их по ключевым словам: <span class="placeholder">[beauty, makeup, hair, luxury salon]</span>). Дизайн должен работать сразу после открытия файла в браузере.
+
+5. ВИЗУАЛ И ОГРАНИЧЕНИЯ: 
+- Настроение и стиль: <span class="placeholder">[дорогой, минималистичный, элегантный]</span>.
+- Цветовая гамма: <span class="placeholder">[золотой акцентный, глубокий черный фон и пудровые детали]</span>.
+- Шрифты: <span class="placeholder">[Классический с засечками для заголовков (Playfair Display) и строгий без засечек для текста (Montserrat)]</span>.
+- Эффекты: <span class="placeholder">[Добавь плавные анимации появления элементов при скролле]</span>.
+Код должен быть чистым, адаптивным (для мобильных телефонов) и без ошибок.</code>
+      </div>
+      <p class="copy-hint"><i class="fa-solid fa-circle-info"></i> Скопируйте текст, настройте значения в синих скобках
+        под себя и отправьте в ИИ-чат.</p>
+    </section>
+
+    <section class="slide-container">
+      <span class="slide-number">15 / 17</span>
+      <h2><i class="fa-solid fa-list-check"></i> Что мы делаем прямо сейчас</h2>
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h3>Копируем промпт и вставляем свои детали</h3>
+            <p>Замените значения в квадратных скобках на свои — например, вместо салона красоты напишите «Кофейня», а
+              вместо золотого — «коричневый, бежевый»</p>
+          </div>
+          <i class="fa-solid fa-copy step-icon"></i>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h3>Отправляем в ИИ</h3>
+            <p>Вставьте готовый текст в ChatGPT, Claude или другой чат с нейросетью и дождитесь генерации полного кода
+            </p>
+          </div>
+          <i class="fa-solid fa-paper-plane step-icon"></i>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h3>Создаём файл index.html</h3>
+            <p>На компьютере создайте новый текстовый файл, назовите его index.html и вставьте туда весь скопированный
+              HTML-код</p>
+          </div>
+          <i class="fa-solid fa-file-code step-icon"></i>
+        </div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h3>Открываем через браузер</h3>
+            <p>Дважды кликните по файлу index.html — ваш профессиональный премиум-сайт мгновенно откроется и будет
+              работать!</p>
+          </div>
+          <i class="fa-solid fa-globe step-icon"></i>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide-container">
+      <span class="slide-number">16 / 17</span>
+      <h2><i class="fa-solid fa-chart-line"></i> Почему стоит учить Full Stack?</h2>
+      <div class="perspectives-grid">
+        <div class="perspective-card">
+          <div class="p-icon"><i class="fa-solid fa-rocket"></i></div>
+          <h3>Независимость</h3>
+          <p>Вы можете создать сайт для себя, друга или клиента — без ожидания и без посредников</p>
+        </div>
+        <div class="perspective-card">
+          <div class="p-icon"><i class="fa-solid fa-briefcase"></i></div>
+          <h3>Востребованность</h3>
+          <p>Компании ищут людей, которые понимают весь процесс — от кнопки до сервера</p>
+        </div>
+        <div class="perspective-card">
+          <div class="p-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+          <h3>Навык будущего</h3>
+          <p>ИИ не заменит вас — он усилит. Тот, кто умеет управлять нейросетью, всегда впереди</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide-container qa-slide">
+      <span class="slide-number">17 / 17</span>
+      <div class="qa-icon">
+        <i class="fa-solid fa-circle-question"></i>
+      </div>
+      <h2>Ваши вопросы?</h2>
+      <p class="qa-text">Спросите о чём угодно — про код, про ИИ, про обучение. Здесь нет глупых вопросов.</p>
+      <div class="qa-topics">
+        <span class="qa-topic">Как начать с нуля?</span>
+        <span class="qa-topic">Какой ИИ лучше?</span>
+        <span class="qa-topic">Сколько времени нужно?</span>
+        <span class="qa-topic">Что дальше?</span>
+      </div>
+    </section>
+
+    <section class="slide-container final-slide">
+      <span class="slide-number">17 / 17</span>
+      <div class="final-icon">
+        <i class="fa-solid fa-star"></i>
+      </div>
+      <h2>Вы — молодцы!</h2>
+      <p class="final-text">Сегодня вы узнали, как устроены сайты, познакомились с ИИ-помощником и даже создали свой
+        первый проект. Это серьёзный шаг — и он уже сделан.</p>
+      <div class="final-badge">
+        <i class="fa-solid fa-check"></i> Первый шаг в IT — позади
+      </div>
+    </section>
+
+  </div>
+
+  <div class="controls-container">
+    <button class="nav-btn" id="prevBtn" disabled>
+      <i class="fa-solid fa-arrow-left"></i> Назад
+    </button>
+
+    <div class="progress-bar-wrapper">
+      <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+
+    <button class="nav-btn" id="nextBtn">
+      Вперед <i class="fa-solid fa-arrow-right"></i>
+    </button>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide-container');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const progressBar = document.getElementById('progressBar');
+
+    let currentSlideIndex = 0;
+    const totalSlides = slides.length;
+
+    function updateSlider() {
+      slides.forEach((slide, index) => {
+        if (index === currentSlideIndex) {
+          slide.classList.add('active');
+          slide.scrollTop = 0;
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+
+      prevBtn.disabled = currentSlideIndex === 0;
+      nextBtn.disabled = currentSlideIndex === totalSlides - 1;
+
+      const progressPercent = ((currentSlideIndex + 1) / totalSlides) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (currentSlideIndex > 0) {
+        currentSlideIndex--;
+        updateSlider();
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentSlideIndex < totalSlides - 1) {
+        currentSlideIndex++;
+        updateSlider();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        if (currentSlideIndex < totalSlides - 1) {
+          e.preventDefault();
+          currentSlideIndex++;
+          updateSlider();
+        }
+      } else if (e.key === 'ArrowLeft') {
+        if (currentSlideIndex > 0) {
+          e.preventDefault();
+          currentSlideIndex--;
+          updateSlider();
+        }
+      }
+    });
+
+    // Супер-надежная логика копирования промпта (работает везде)
+    const copyBtn = document.getElementById('copyBtn');
+    const promptText = document.getElementById('promptText');
+
+    copyBtn.addEventListener('click', (e) => {
+      e.stopPropagation(); // Предотвращаем переключение слайдов
+
+      // Функция визуального подтверждения
+      const showSuccess = () => {
+        copyBtn.classList.add('copied');
+        copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Скопировано!';
+        setTimeout(() => {
+          copyBtn.classList.remove('copied');
+          copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Копировать';
+        }, 2000);
+      };
+
+      const showError = () => {
+        copyBtn.innerHTML = '<i class="fa-solid fa-xmark"></i> Ошибка';
+        setTimeout(() => {
+          copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Копировать';
+        }, 2000);
+      };
+
+      // Получаем чистый текст
+      const textToCopy = promptText.innerText || promptText.textContent;
+
+      // Способ 1: Использование современного API (если доступно)
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(textToCopy)
+          .then(showSuccess)
+          .catch(() => fallbackCopy(textToCopy)); // Если не вышло, пробуем способ 2
+      } else {
+        // Способ 2: Надежный запасной вариант (для локальных файлов file://)
+        fallbackCopy(textToCopy);
+      }
+
+      function fallbackCopy(text) {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        
+        // Делаем элемент скрытым, но активным для выделения
+        textArea.style.position = 'fixed';
+        textArea.style.top = '0';
+        textArea.style.left = '0';
+        textArea.style.opacity = '0';
+        
+        document.body.appendChild(textArea);
+        
+        // Фокус и выделение специально для всех типов устройств, включая мобильные
+        textArea.focus();
+        textArea.select();
+        try {
+          textArea.setSelectionRange(0, 99999);
+        } catch (e) {}
+
+        try {
+          const successful = document.execCommand('copy');
+          if (successful) {
+            showSuccess();
+          } else {
+            showError();
+          }
+        } catch (err) {
+          console.error('Ошибка копирования:', err);
+          showError();
+        }
+
+        document.body.removeChild(textArea);
+      }
+    });
+  </script>
+
+</body>
+
+</html>
