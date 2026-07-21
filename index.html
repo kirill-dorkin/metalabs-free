@@ -3405,7 +3405,8 @@ ${userPrompt}
 
   <!-- Live Reload Script -->
   <script>
-    if (window.EventSource) {
+    // Запускаем авто-обновление только если мы на локальном компьютере (localhost)
+    if (window.EventSource && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
       const evtSource = new EventSource("/livereload");
       evtSource.onmessage = function (event) {
         if (event.data === "reload") {
