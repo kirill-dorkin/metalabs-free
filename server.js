@@ -102,8 +102,8 @@ ${prompt}
         access: 'public',
         contentType: 'text/html'
       });
-      // Vercel Blob возвращает полный URL
-      res.json({ url: blob.url });
+      // Возвращаем локальную ссылку, которая скачает Blob и отдаст его браузеру без скачивания как файл
+      res.json({ url: `/api/view?url=${encodeURIComponent(blob.url)}` });
     } else {
       // Иначе сохраняем локально
       const filePath = path.join(sitesDir, fileName);
@@ -129,6 +129,24 @@ ${prompt}
         fs.writeFileSync(path.join(__dirname, 'error.log'), error.toString() + '\n' + (error.stack || ''));
     } catch(e) {}
     res.status(500).json({ error: 'Failed to generate site' });
+  }
+});
+
+// Проксируем HTML-файлы с Vercel Blob, чтобы они открывались в браузере, а не скачивались
+app.get('/api/view', async (req, res) => {
+  try {
+    const blobUrl = req.query.url;
+    if (!blobUrl || !blobUrl.includes('blob.vercel-storage.com')) {
+      return res.status(400).send('Invalid URL');
+    }
+    const response = await fetch(blobUrl);
+    if (!response.ok) throw new Error('Failed to fetch');
+    const html = await response.text();
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(html);
+  } catch (error) {
+    console.error('Error viewing site:', error);
+    res.status(500).send('Error loading site');
   }
 });
 
