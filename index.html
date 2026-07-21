@@ -3391,7 +3391,7 @@ ${userPrompt}
         }
 
       } catch (error) {
-        alert('Произошла ошибка при генерации сайта. Проверьте запущен ли сервер server.js и есть ли ключ Gemini.');
+        alert('Нейросеть сейчас слегка перегружена (много запросов). Подождите 5 секунд и попробуйте снова!');
         console.error(error);
       } finally {
         generateBtn.disabled = false;
