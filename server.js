@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(express.static(__dirname));
 
 // Папка для сохранения сайтов
-const sitesDir = path.join(__dirname, 'public', 'sites');
+const sitesDir = path.join(__dirname, 'local-sites', 'sites');
 if (!fs.existsSync(sitesDir)) {
   fs.mkdirSync(sitesDir, { recursive: true });
 }
@@ -113,7 +113,7 @@ ${prompt}
               }
           }
       }
-      res.json({ url: `/public/sites/${fileName}`, localIp });
+      res.json({ url: `/local-sites/sites/${fileName}`, localIp });
     }
 
   } catch (error) {
