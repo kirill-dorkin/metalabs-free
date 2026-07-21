@@ -22,8 +22,12 @@ app.use(express.static(__dirname));
 
 // Папка для сохранения сайтов
 const sitesDir = path.join(__dirname, 'local-sites', 'sites');
-if (!fs.existsSync(sitesDir)) {
-  fs.mkdirSync(sitesDir, { recursive: true });
+try {
+  if (!fs.existsSync(sitesDir)) {
+    fs.mkdirSync(sitesDir, { recursive: true });
+  }
+} catch (e) {
+  // Ignored on read-only environments like Vercel
 }
 
 app.post('/api/generate', async (req, res) => {
