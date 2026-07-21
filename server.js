@@ -93,7 +93,10 @@ ${prompt}
     const fileId = crypto.randomBytes(8).toString('hex');
     const fileName = `site-${fileId}.html`;
 
-    if (process.env.BLOB_READ_WRITE_TOKEN) {
+    if (process.env.VERCEL || process.env.BLOB_READ_WRITE_TOKEN) {
+      if (!process.env.BLOB_READ_WRITE_TOKEN) {
+         throw new Error("BLOB_READ_WRITE_TOKEN is missing! Vercel Blob is not connected properly.");
+      }
       // Если есть токен Vercel Blob, сохраняем в облако
       const blob = await put(fileName, htmlCode, {
         access: 'public',
