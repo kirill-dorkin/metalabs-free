@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Салон красоты "Gloss"</title>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #fff;
+            scroll-behavior: smooth;
+        }
+        h1, h2 {
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+            padding: 10px 0;
+        }
+        header {
+            background: url('https://source.unsplash.com/1600x900/?beauty,hairstyle') no-repeat center center/cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+        }
+        .cta-button {
+            padding: 15px 30px;
+            font-size: 1.5em;
+            background-color: #d9b99b;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        .cta-button:hover {
+            background-color: #c8a597;
+        }
+        section {
+            padding: 60px 20px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .footer {
+            background-color: #1a1a1a;
+            padding: 20px;
+            text-align: center;
+        }
+        @media (max-width: 600px) {
+            .cta-button {
+                width: 100%;
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Салон красоты "Gloss"</h1>
+    <h2>Стильные стрижки, укладки и премиальный маникюр</h2>
+    <button class="cta-button" onclick="document.getElementById('contacts').scrollIntoView();">Записаться онлайн</button>
+</header>
+
+<section id="about">
+    <h2>О нас</h2>
+    <p>Мы в "Gloss" знаем, как важно время и комфорт для наших клиентов. Наша команда профессионалов всегда готова сделать вас еще прекраснее.</p>
+</section>
+
+<section id="services">
+    <h2>Наши услуги с ценами</h2>
+    <p>Стрижка - 1500₽</p>
+    <p>Укладка - 1200₽</p>
+    <p>Маникюр - 800₽</p>
+</section>
+
+<section id="advantages">
+    <h2>Преимущества</h2>
+    <p>Качественные продукты, профессиональные мастера и индивидуальный подход к каждому клиенту.</p>
+</section>
+
+<section id="gallery">
+    <h2>Галерея работ</h2>
+    <img src="https://source.unsplash.com/300x200/?haircut" alt="Работа 1">
+    <img src="https://source.unsplash.com/300x200/?nails" alt="Работа 2">
+</section>
+
+<section id="contacts">
+    <h2>Контакты</h2>
+    <p>г. Москва, ул. Красивая 1</p>
+    <p>Телефон: +7 (999) 000-00-00</p>
+    <p>Соцсети: @gloss_beauty</p>
+</section>
+
+<footer class="footer">
+    <p>© 2023 Салон красоты "Gloss". Все права защищены.</p>
+</footer>
+
+<script>
+    const sections = document.querySelectorAll('section');
+    const options = {
+        root: null,
+        threshold: 0.1,
+        rootMargin: '0px'
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, options);
+
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+</script>
+
+</body>
+</html>

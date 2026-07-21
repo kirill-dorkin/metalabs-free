@@ -1,0 +1,4 @@
+Error: {"error":{"message":"google/gemini-3.1-pro is not a valid model ID","code":400},"user_id":"user_3GfHeYwL3NTlqVJGrzSk7qY5kaJ"}
+Error: {"error":{"message":"google/gemini-3.1-pro is not a valid model ID","code":400},"user_id":"user_3GfHeYwL3NTlqVJGrzSk7qY5kaJ"}
+    at <anonymous> (/Users/morfi/Documents/free-lesson/server.js:75:19)
+    at processTicksAndRejections (native:7:39)

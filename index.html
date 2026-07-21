@@ -9,6 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     *,
     *::before,
@@ -18,9 +20,18 @@
       padding: 0;
     }
 
+    /* Кастомный цвет выделения текста под стиль градиентов */
+    ::selection {
+      background: rgba(192, 132, 252, 0.4);
+      color: inherit;
+    }
+
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #f8fafc;
+      /* Премиальный анимированный градиентный фон */
+      background: linear-gradient(-45deg, #fce7f3, #e0e7ff, #f3e8ff, #fff1f2);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
       color: #334155;
       line-height: 1.6;
       height: 100vh;
@@ -30,6 +41,59 @@
       align-items: center;
       padding: 20px;
       overflow: hidden;
+      position: relative;
+    }
+
+    @keyframes gradientBG {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* Фоновые размытые шары для эффекта объема */
+    body::before,
+    body::after {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      filter: blur(100px);
+      z-index: -1;
+      animation: floatOrbs 20s infinite ease-in-out alternate;
+    }
+
+    body::before {
+      background: rgba(99, 102, 241, 0.3);
+      /* Фиолетовый */
+      top: -100px;
+      left: -100px;
+    }
+
+    body::after {
+      background: rgba(236, 72, 153, 0.3);
+      /* Розовый */
+      bottom: -100px;
+      right: -100px;
+      animation-delay: -10s;
+    }
+
+    @keyframes floatOrbs {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      100% {
+        transform: translate(100px, 100px) scale(1.2);
+      }
     }
 
     .presentation {
@@ -40,25 +104,73 @@
       justify-content: center;
       align-items: center;
       position: relative;
+      perspective: 1000px;
+      /* Для 3D анимации */
     }
 
     .slide-container {
       display: none;
-      /* Скрыты по умолчанию */
       width: 100%;
       height: 100%;
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 4px 24px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.06);
+      /* Матовое стекло */
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(30, 41, 59, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
       padding: 56px 64px;
       flex-direction: column;
-      position: relative;
+      position: absolute;
+      top: 0;
+      left: 0;
       overflow-y: auto;
+
+      /* Анимация переходов */
+      opacity: 0;
+      transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .slide-container.active {
       display: flex !important;
-      /* Показываем только активный слайд */
+      opacity: 1;
+      z-index: 10;
+    }
+
+    .reading-slide {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 64px;
+    }
+    .reading-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 20px;
+      padding: 24px 48px;
+      border-radius: 100px;
+      margin-bottom: 48px;
+    }
+    .reading-badge i {
+      font-size: 3.5rem;
+    }
+    .reading-badge h2 {
+      margin: 0;
+      padding: 0;
+      border: none;
+      font-size: 3rem;
+      font-weight: 800;
+    }
+    .reading-text {
+      font-size: 2.6rem;
+      line-height: 1.6;
+      color: #1e293b;
+      font-weight: 500;
+      max-width: 1100px;
+      margin: 0;
+    }
+    .reading-text strong {
+      font-weight: 800;
     }
 
     .slide-number {
@@ -82,13 +194,13 @@
     .slide-title .title-icon {
       width: 80px;
       height: 80px;
-      background: #2563eb;
+      background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
       border-radius: 22px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin-bottom: 28px;
-      box-shadow: 0 8px 32px rgba(37, 99, 235, 0.15);
+      box-shadow: 0 8px 32px rgba(79, 70, 229, 0.25);
       animation: float 3s ease-in-out infinite;
     }
 
@@ -98,23 +210,42 @@
     }
 
     @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
     }
 
     .slide-title h1 {
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       font-weight: 800;
       color: #1e293b;
       line-height: 1.2;
-      max-width: 600px;
+      max-width: 700px;
       margin-bottom: 16px;
+      letter-spacing: -0.02em;
     }
 
     .slide-title h1 .gradient-blue {
-      background: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%);
+      background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      animation: hueShift 5s infinite alternate;
+    }
+
+    @keyframes hueShift {
+      0% {
+        filter: hue-rotate(0deg);
+      }
+
+      100% {
+        filter: hue-rotate(30deg);
+      }
     }
 
     .slide-title .subtitle {
@@ -164,18 +295,21 @@
 
     /* Common headings */
     h2 {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #1e293b;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #0f172a;
       margin-bottom: 32px;
       display: flex;
       align-items: center;
       gap: 14px;
+      letter-spacing: -0.02em;
     }
 
     h2 i {
-      color: #2563eb;
-      font-size: 1.5rem;
+      background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 1.8rem;
     }
 
     /* Slide 2 — About me */
@@ -470,15 +604,17 @@
     }
 
     .format-item.offline {
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
       color: #1e40af;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
     }
 
     .format-item.online {
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
       color: #166534;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
     }
 
     .format-item i {
@@ -493,26 +629,29 @@
     }
 
     .intro-question {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
+      background: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.8);
       border-radius: 14px;
       padding: 28px;
       display: flex;
       align-items: flex-start;
       gap: 18px;
-      transition: box-shadow 0.2s;
+      transition: all 0.3s ease;
       flex: 1;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
     }
 
     .intro-question:hover {
-      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.08);
+      transform: translateY(-2px);
     }
 
     .intro-question .q-number {
       width: 44px;
       height: 44px;
       min-width: 44px;
-      background: #2563eb;
+      background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
       color: #ffffff;
       border-radius: 12px;
       display: flex;
@@ -670,18 +809,21 @@
     }
 
     .expect-card {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
+      background: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.8);
       border-radius: 14px;
       padding: 24px;
       display: flex;
       align-items: flex-start;
       gap: 16px;
-      transition: box-shadow 0.2s;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      cursor: pointer;
     }
 
     .expect-card:hover {
-      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.08);
+      transform: translateY(-2px);
     }
 
     .expect-card .exp-icon {
@@ -834,6 +976,7 @@
       text-align: center;
       gap: 18px;
       transition: box-shadow 0.2s, transform 0.2s;
+      cursor: pointer;
     }
 
     .pillar-card:hover {
@@ -1192,6 +1335,7 @@
       align-items: center;
       gap: 12px;
       transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
     }
 
     .rule-card:hover {
@@ -1252,16 +1396,55 @@
     .practice-icon {
       width: 96px;
       height: 96px;
-      background: #2563eb;
+      background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
       border-radius: 24px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin-bottom: 32px;
       animation: pulse 2s ease-in-out infinite;
+      box-shadow: 0 10px 32px rgba(79, 70, 229, 0.25);
     }
 
     .practice-icon i {
+      font-size: 42px;
+      color: #ffffff;
+    }
+
+    /* Slide 5 — Theory */
+    .theory-slide {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: #ffffff;
+    }
+
+    .theory-slide h2 {
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+
+    .theory-slide .theory-text {
+      font-size: 1.3rem;
+      color: #475569;
+      max-width: 600px;
+      margin-bottom: 40px;
+    }
+
+    .theory-icon {
+      width: 96px;
+      height: 96px;
+      background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 32px;
+      animation: float 3s ease-in-out infinite;
+      box-shadow: 0 10px 32px rgba(79, 70, 229, 0.25);
+    }
+
+    .theory-icon i {
       font-size: 42px;
       color: #ffffff;
     }
@@ -1525,22 +1708,368 @@
       display: flex;
       align-items: center;
       gap: 16px;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
+      background: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.8);
       border-radius: 12px;
       padding: 16px 20px;
-      transition: box-shadow 0.2s;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      cursor: pointer;
     }
 
     .ps-step:hover {
-      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.08);
+      transform: translateY(-2px);
+    }
+
+    /* Стили для слайда с китами */
+    .slide-full-img {
+      padding: 0;
+      overflow: hidden;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .whale-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .whale-title {
+      position: absolute;
+      top: 50px;
+      text-align: center;
+      z-index: 10;
+      width: 100%;
+    }
+
+    .whale-title h2 {
+      display: block;
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: #1e293b;
+      margin-bottom: 0;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .whale-title .gradient-text {
+      background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .pillar-full-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.9;
+    }
+
+    .whale-labels {
+      position: absolute;
+      bottom: 5%;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      padding: 0 50px;
+      z-index: 10;
+    }
+
+    .whale-label {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 20px;
+      padding: 20px 30px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transform: translateY(0);
+      transition: all 0.3s ease;
+      width: 250px;
+    }
+
+    .whale-label:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .whale-label h3 {
+      font-size: 2rem;
+      font-weight: 900;
+      margin-bottom: 5px;
+    }
+
+    .whale-label p {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 5px;
+    }
+
+    .whale-label span {
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+
+    .label-html h3 {
+      color: #f97316;
+    }
+
+    .label-css h3 {
+      color: #3b82f6;
+    }
+
+    .label-js h3 {
+      color: #eab308;
+    }
+
+    /* Окно редактора промпта (Стиль VS Code) */
+    .mac-window {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto 32px auto;
+      background: #1e1e1e;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+      border: 1px solid #333;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mac-header {
+      background: #252526;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #1e1e1e;
+      position: relative;
+    }
+
+    .mac-dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .mac-dots .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .mac-dots .red {
+      background: #ff5f56;
+    }
+
+    .mac-dots .yellow {
+      background: #ffbd2e;
+    }
+
+    .mac-dots .green {
+      background: #27c93f;
+    }
+
+    .mac-title {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 13px;
+      color: #969696;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .editor-content {
+      padding: 24px 0;
+      color: #d4d4d4;
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 15px;
+      line-height: 1.6;
+      height: 380px;
+      overflow-y: auto;
+    }
+
+    .editor-content::-webkit-scrollbar {
+      width: 14px;
+    }
+
+    .editor-content::-webkit-scrollbar-track {
+      background: #1e1e1e;
+    }
+
+    .editor-content::-webkit-scrollbar-thumb {
+      background: #424242;
+      border: 4px solid #1e1e1e;
+      border-radius: 8px;
+    }
+
+    .editor-content::-webkit-scrollbar-thumb:hover {
+      background: #4f4f4f;
+    }
+
+    .editor-line {
+      display: flex;
+      padding: 6px 16px;
+      align-items: flex-start;
+    }
+
+    .line-num {
+      color: #858585;
+      width: 32px;
+      text-align: right;
+      padding-right: 16px;
+      user-select: none;
+      flex-shrink: 0;
+    }
+
+    .comment {
+      color: #6a9955;
+    }
+
+    .keyword {
+      color: #9cdcfe;
+      margin-right: 8px;
+      min-width: 90px;
+    }
+
+    .inline-input {
+      background: transparent;
+      border: none;
+      border-bottom: 1px dashed #555;
+      color: #ce9178;
+      font-family: inherit;
+      font-size: inherit;
+      outline: none;
+      width: 100%;
+      resize: none;
+      transition: border-color 0.2s;
+    }
+
+    .inline-input:focus {
+      border-bottom-color: #569cd6;
+    }
+
+    button:focus {
+      outline: none;
+    }
+    .prompt-text-editor {
+      position: relative;
+      padding: 32px 24px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: #e2e8f0;
+      background: #1e293b;
+      border-radius: 0 0 12px 12px;
+      text-align: left;
+      min-height: 400px;
+    }
+    .prompt-input {
+      background: rgba(86, 156, 214, 0.1);
+      border: 1px solid rgba(86, 156, 214, 0.3);
+      color: #9cdcfe;
+      border-radius: 4px;
+      padding: 2px 6px;
+      outline: none;
+      transition: all 0.2s;
+      display: inline-block;
+      min-height: 1.6em;
+      min-width: 40px;
+    }
+    .prompt-input:focus {
+      background: rgba(86, 156, 214, 0.2);
+      border-color: #569cd6;
+      color: #9cdcfe;
+    }
+
+    /* Все эффекты наведения/нажатия убраны */
+
+    /* Loader */
+    .loader {
+      display: none;
+      margin-top: 24px;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(79, 70, 229, 0.1);
+      border-left-color: #ec4899;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px auto;
+    }
+
+    @keyframes spin {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Result Slide Styles */
+    .success-container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.5);
+      padding: 48px;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .success-icon {
+      font-size: 64px;
+      background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 24px;
+      animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+      0% {
+        transform: scale(0);
+      }
+
+      80% {
+        transform: scale(1.1);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .open-site-btn {
+      display: inline-block;
+      margin-top: 32px;
+      padding: 18px 40px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      text-decoration: none;
+      border-radius: 100px;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+    }
+
+    .open-site-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(16, 185, 129, 0.4);
     }
 
     .ps-step-num {
       width: 36px;
       height: 36px;
       min-width: 36px;
-      background: #2563eb;
+      background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
       color: #ffffff;
       border-radius: 10px;
       display: flex;
@@ -1596,6 +2125,112 @@
       color: #64748b;
       max-width: 500px;
       margin-bottom: 32px;
+    }
+
+    .prompt-textarea {
+      width: 100%;
+      height: 350px;
+      background: #1e293b;
+      color: #f8fafc;
+      padding: 24px;
+      border-radius: 12px;
+      border: 1px solid #334155;
+      font-family: monospace;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      resize: vertical;
+      margin-bottom: 24px;
+      transition: all 0.2s;
+    }
+
+    .prompt-textarea:focus {
+      outline: none;
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    }
+
+
+    .loader {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+      font-weight: 600;
+      color: #2563eb;
+    }
+
+    /* Result slide */
+    .result-slide-content {
+      display: flex;
+      flex-direction: row;
+      gap: 32px;
+      align-items: stretch;
+      width: 100%;
+      height: 100%;
+      flex: 1;
+    }
+
+    .result-preview {
+      flex: 1;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #f8fafc;
+    }
+
+    .result-preview iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .result-sidebar {
+      width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      align-items: center;
+      justify-content: center;
+      background: #f8fafc;
+      padding: 32px;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      text-align: center;
+    }
+
+    .qr-container {
+      background: white;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .qr-hint {
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+    }
+
+    .qr-subhint {
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+
+    .link-btn {
+      background: transparent;
+      border: 2px solid #2563eb;
+      color: #2563eb;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 16px;
+      transition: all 0.2s;
+    }
+
+    .link-btn:hover {
+      background: #eff6ff;
     }
 
     .qa-topics {
@@ -1681,7 +2316,7 @@
     }
 
     .nav-btn {
-      background: #2563eb;
+      background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
       color: #ffffff;
       border: none;
       padding: 10px 20px;
@@ -1689,21 +2324,22 @@
       cursor: pointer;
       font-weight: 600;
       font-size: 0.9rem;
-      transition: background 0.2s, opacity 0.2s;
+      transition: opacity 0.2s;
       display: flex;
       align-items: center;
       gap: 8px;
+      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
     }
 
     .nav-btn:hover {
-      background: #1d4ed8;
+      opacity: 0.9;
     }
 
     .nav-btn:disabled {
-      background: #cbd5e1;
+      background: #e2e8f0;
       color: #94a3b8;
       cursor: not-allowed;
-      opacity: 0.7;
+      box-shadow: none;
     }
 
     .progress-bar-wrapper {
@@ -1717,7 +2353,7 @@
 
     .progress-bar-fill {
       height: 100%;
-      background: #2563eb;
+      background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
       width: 8.33%;
       transition: width 0.3s ease;
     }
@@ -1866,7 +2502,8 @@
           <img class="melbet-logo" src="melbet.png" alt="MelBet logo">
           <div class="experience-text">
             <h4>Прежде чем основать MicroStudio</h4>
-            <p>Я работал разработчиком в компании MelBet — получил опыт в крупной IT-компании и понял, что хочу своё дело</p>
+            <p>Я работал разработчиком в компании MelBet — получил опыт в крупной IT-компании и понял, что хочу своё
+              дело</p>
             <span class="role-badge"><i class="fa-solid fa-code"></i> Разработчик</span>
           </div>
         </div>
@@ -1887,10 +2524,12 @@
       <h2><i class="fa-solid fa-users"></i> Знакомство</h2>
       <div class="intro-round">
         <div class="intro-round-left">
-          <p class="intro-description">Мы проводим короткий раунд знакомства — 10 минут, каждый по очереди отвечает на три вопроса. Это поможет нам всем лучше узнать друг друга и почувствовать себя комфортнее.</p>
+          <p class="intro-description">Мы проводим короткий раунд знакомства — 10 минут, каждый по очереди отвечает на
+            три вопроса. Это поможет нам всем лучше узнать друг друга и почувствовать себя комфортнее.</p>
           <div class="intro-note">
             <i class="fa-solid fa-face-smile"></i>
-            <span>Не переживайте, если вам некомфортно отвечать — это нормально. Просто представьтесь и расскажите немного о себе.</span>
+            <span>Не переживайте, если вам некомфортно отвечать — это нормально. Просто представьтесь и расскажите
+              немного о себе.</span>
           </div>
           <div class="intro-format">
             <div class="format-item offline">
@@ -1932,11 +2571,13 @@
       <h2><i class="fa-solid fa-hourglass-half"></i> Честно об ожиданиях</h2>
       <div class="expect-grid">
         <div class="expect-top">
-          <p class="expect-text">Каким бы хорошим учителем ни был и какими бы умными ни были вы — <strong>за один час невозможно сделать из вас программиста</strong>.</p>
+          <p class="expect-text">Каким бы хорошим учителем ни был и какими бы умными ни были вы — <strong>за один час
+              невозможно сделать из вас программиста</strong>.</p>
           <p class="expect-text">Невозможно сжать в час то, что в вузах изучают 4–5 лет.</p>
           <div class="expect-warning">
             <i class="fa-solid fa-graduation-cap"></i>
-            <span>На нашем курсе 5-летняя программа сжимается до 8 месяцев — и оставляем только то, что реально нужно в работе.</span>
+            <span>На нашем курсе 5-летняя программа сжимается до 8 месяцев — и оставляем только то, что реально нужно в
+              работе.</span>
           </div>
         </div>
         <div class="expect-bottom">
@@ -1944,7 +2585,8 @@
             <div class="exp-icon blue"><i class="fa-solid fa-face-smile"></i></div>
             <div class="exp-content">
               <h3>Это нормально — если что-то не получается с первого раза</h3>
-              <p>Многие из вас впервые пробуют программировать. Запутаться, ошибиться, не понять — это часть процесса</p>
+              <p>Многие из вас впервые пробуют программировать. Запутаться, ошибиться, не понять — это часть процесса
+              </p>
             </div>
           </div>
           <div class="expect-card">
@@ -1972,28 +2614,42 @@
       </div>
     </section>
 
-    <section class="slide-container slide-full-img">
+    <section class="slide-container theory-slide">
+      <span class="slide-number"></span>
+      <div class="theory-icon">
+        <i class="fa-solid fa-book-open"></i>
+      </div>
+      <h2><i class="fa-solid fa-brain"></i> Немного теории</h2>
+      <p class="theory-text">Сейчас мы разберём базовые понятия, на которых строится любой сайт</p>
+    </section>
+
+    <section class="slide-container slide-full-img"
+      style="padding: 40px; display: flex; align-items: center; justify-content: center;">
       <span class="slide-number">05 / 16</span>
-      <img class="pillar-full-img" src="t5.png" alt="Три кита веб-разработки">
+      <img class="pillar-full-img" src="t5.png" alt="Три кита веб-разработки"
+        style="max-height: 100%; max-width: 100%; object-fit: contain; border-radius: 20px;">
     </section>
 
     <section class="slide-container">
       <span class="slide-number">06 / 16</span>
       <h2><i class="fa-solid fa-hammer"></i> Как устроен сайт — аналогия с домом</h2>
-      <p class="house-text" style="margin-bottom: 24px;">Представьте, что создание сайта — это <strong>строительство дома</strong>. Каждый слой добавляет новый уровень.</p>
+      <p class="house-text" style="margin-bottom: 24px;">Представьте, что создание сайта — это <strong>строительство
+          дома</strong>. Каждый слой добавляет новый уровень.</p>
       <div class="house-slide">
         <div class="house-left">
           <div class="house-badge blue">
             <i class="fa-solid fa-file-lines"></i> Только HTML
           </div>
-          <p class="house-text">Это <strong>скелет дома</strong> — фундамент, стены, перекрытия, перегородки. Дом уже существует, в нём можно жить, но выглядит он как стройка.</p>
+          <p class="house-text">Это <strong>скелет дома</strong> — фундамент, стены, перекрытия, перегородки. Дом уже
+            существует, в нём можно жить, но выглядит он как стройка.</p>
         </div>
         <div class="house-right">
           <div class="house-element">
             <div class="he-icon orange"><i class="fa-solid fa-cubes"></i></div>
             <div class="he-content">
               <h3>Фундамент</h3>
-              <p>HTML-теги — это фундамент. <code>&lt;h1&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;img&gt;</code> — каждый тег несёт свою нагрузку</p>
+              <p>HTML-теги — это фундамент. <code>&lt;h1&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;img&gt;</code> —
+                каждый тег несёт свою нагрузку</p>
             </div>
           </div>
           <div class="house-element">
@@ -2015,20 +2671,33 @@
     </section>
 
     <section class="slide-container slide-full-img">
-      <span class="slide-number">07 / 16</span>
+      <span class="slide-number"></span>
       <img class="pillar-full-img" src="html.png" alt="Только HTML">
+    </section>
+
+    <section class="slide-container reading-slide">
+      <span class="slide-number"></span>
+      <div class="reading-badge" style="background: rgba(249, 115, 22, 0.1);">
+        <i class="fa-solid fa-code" style="color: #f97316;"></i>
+        <h2 style="color: #f97316;">HTML</h2>
+      </div>
+      <p class="reading-text">
+        Язык разметки, который говорит браузеру, <strong style="color: #f97316;">что именно</strong> должно быть на странице. Он создает заголовки, абзацы, кнопки и картинки. Это <strong style="color: #f97316;">фундамент и каркас</strong> сайта, без которого ничего не будет работать.
+      </p>
     </section>
 
     <section class="slide-container">
       <span class="slide-number">08 / 16</span>
       <h2><i class="fa-solid fa-paint-roller"></i> HTML + CSS — дом с отделкой</h2>
-      <p class="house-text" style="margin-bottom: 24px;">Добавляем <strong>CSS</strong> — и дом из стройки превращается в уютное жильё.</p>
+      <p class="house-text" style="margin-bottom: 24px;">Добавляем <strong>CSS</strong> — и дом из стройки превращается
+        в уютное жильё.</p>
       <div class="house-slide">
         <div class="house-left">
           <div class="house-badge green">
             <i class="fa-solid fa-palette"></i> HTML + CSS
           </div>
-          <p class="house-text">CSS — это <strong>отделка</strong>: покраска стен, обои, напольное покрытие, светильники. Дом становится красивым и комфортным.</p>
+          <p class="house-text">CSS — это <strong>отделка</strong>: покраска стен, обои, напольное покрытие,
+            светильники. Дом становится красивым и комфортным.</p>
         </div>
         <div class="house-right">
           <div class="house-element">
@@ -2057,20 +2726,33 @@
     </section>
 
     <section class="slide-container slide-full-img">
-      <span class="slide-number">09 / 16</span>
+      <span class="slide-number"></span>
       <img class="pillar-full-img" src="html+css.png" alt="HTML + CSS">
+    </section>
+
+    <section class="slide-container reading-slide">
+      <span class="slide-number"></span>
+      <div class="reading-badge" style="background: rgba(59, 130, 246, 0.1);">
+        <i class="fa-solid fa-palette" style="color: #3b82f6;"></i>
+        <h2 style="color: #3b82f6;">CSS</h2>
+      </div>
+      <p class="reading-text">
+        Язык стилей, который отвечает за <strong style="color: #3b82f6;">внешний вид</strong>. С его помощью мы добавляем цвета, шрифты, отступы и расставляем элементы по экрану. CSS превращает скучный скелет в <strong style="color: #3b82f6;">стильный дизайн</strong>.
+      </p>
     </section>
 
     <section class="slide-container">
       <span class="slide-number">10 / 16</span>
       <h2><i class="fa-solid fa-microchip"></i> HTML + CSS + JS — умный дом</h2>
-      <p class="house-text" style="margin-bottom: 24px;">Добавляем <strong>JavaScript</strong> — и дом становится умным, живым, реагирует на действия.</p>
+      <p class="house-text" style="margin-bottom: 24px;">Добавляем <strong>JavaScript</strong> — и дом становится умным,
+        живым, реагирует на действия.</p>
       <div class="house-slide">
         <div class="house-left">
           <div class="house-badge gold">
             <i class="fa-solid fa-code"></i> HTML + CSS + JS
           </div>
-          <p class="house-text">JS — это <strong>автоматизация и интерактив</strong>: кнопки света, автоматические шторы, датчики движения. Дом начинает «думать».</p>
+          <p class="house-text">JS — это <strong>автоматизация и интерактив</strong>: кнопки света, автоматические
+            шторы, датчики движения. Дом начинает «думать».</p>
         </div>
         <div class="house-right">
           <div class="house-element">
@@ -2099,8 +2781,39 @@
     </section>
 
     <section class="slide-container slide-full-img">
-      <span class="slide-number">11 / 16</span>
+      <span class="slide-number"></span>
       <img class="pillar-full-img" src="html+css+js.png" alt="HTML + CSS + JS">
+    </section>
+
+    <section class="slide-container reading-slide">
+      <span class="slide-number"></span>
+      <div class="reading-badge" style="background: rgba(234, 179, 8, 0.1);">
+        <i class="fa-solid fa-bolt" style="color: #eab308;"></i>
+        <h2 style="color: #eab308;">JavaScript</h2>
+      </div>
+      <p class="reading-text">
+        Язык программирования, который <strong style="color: #eab308;">оживляет</strong> наш сайт. Он заставляет кнопки нажиматься, формы — отправляться, а слайдеры — крутиться. JS делает страницу <strong style="color: #eab308;">интерактивной и умной</strong>.
+      </p>
+    </section>
+
+    <section class="slide-container">
+      <span class="slide-number">12 / 17</span>
+      <h2><i class="fa-solid fa-user-astronaut"></i> Итог: кто такой Full Stack разработчик?</h2>
+      <div class="house-slide" style="align-items: center; gap: 40px;">
+        <div class="house-left" style="flex: 1;">
+          <p class="house-text" style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 20px;">
+            Обычно в больших компаниях один человек делает <strong>«лицо»</strong> (Фронтенд), другой — <strong>«мозг»</strong> (Бэкенд), а третий следит за <strong>«памятью»</strong> (Базой данных).
+          </p>
+          <div class="house-badge gold" style="margin: 24px 0; display: inline-flex;">
+            <i class="fa-solid fa-crown"></i> Человек-оркестр
+          </div>
+          <p class="house-text"><strong>Full Stack разработчик</strong> — это мастер на все руки, который может в одиночку создать работающий сайт от начала до конца.</p>
+          <p class="house-text" style="margin-top: 10px;">Он умеет строить фундамент (HTML), делать стильный ремонт (CSS) и прокладывать всю умную систему (JavaScript).</p>
+        </div>
+        <div class="house-right" style="flex: 1; display: flex; justify-content: center; align-items: center;">
+          <img src="house_analogy_ru_translated_1784374618907.png" alt="Аналогия с домом" style="width: 100%; max-width: 500px; border-radius: 20px; box-shadow: 0 15px 40px rgba(79, 70, 229, 0.2); border: 4px solid #ffffff; cursor: pointer; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px) scale(1.02)'" onmouseout="this.style.transform='translateY(0) scale(1)'">
+        </div>
+      </div>
     </section>
 
     <section class="slide-container practice-slide">
@@ -2117,7 +2830,8 @@
       <h2><i class="fa-solid fa-lightbulb"></i> Что такое ИИ и как строить промпт</h2>
       <div class="prompt-structure">
         <div class="ps-intro">
-          <p>ИИ — это не волшебство. Это инструмент, который понимает инструкции. Чем точнее инструкция — тем лучше результат. Эта инструкция называется <strong>промпт</strong>.</p>
+          <p>ИИ — это не волшебство. Это инструмент, который понимает инструкции. Чем точнее инструкция — тем лучше
+            результат. Эта инструкция называется <strong>промпт</strong>.</p>
         </div>
         <div class="ps-steps">
           <div class="ps-step">
@@ -2159,84 +2873,98 @@
       </div>
     </section>
 
-    <section class="slide-container">
-      <span class="slide-number">14 / 17</span>
-      <h2><i class="fa-solid fa-copy"></i> Ваш идеальный промпт для ИИ</h2>
-      <div class="prompt-block" style="position: relative;">
-        <div class="prompt-dots">
-          <span></span><span></span><span></span>
+    <section class="slide-container wheel-slide">
+      <span class="slide-number"></span>
+      <h2 style="justify-content: center;"><i class="fa-solid fa-dharmachakra"></i> Колесо идей</h2>
+      <p style="text-align: center; margin-bottom: 16px; color: #475569;">Давайте выберем, какой сайт мы создадим сегодня!</p>
+
+      <div style="display: flex; gap: 48px; align-items: center; justify-content: center; margin-top: 32px; width: 100%; height: 100%;">
+        <div class="wheel-wrapper" style="position: relative; width: 400px; height: 400px; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.1));">
+          <canvas id="wheelCanvas" width="400" height="400"></canvas>
+          <div class="wheel-pointer" style="position: absolute; top: -25px; left: 50%; transform: translateX(-50%); font-size: 64px; color: #4f46e5; z-index: 10; filter: drop-shadow(0 10px 15px rgba(79, 70, 229, 0.3));"><i class="fa-solid fa-caret-down"></i></div>
         </div>
-        <span class="prompt-label">prompt.txt</span>
 
-        <button class="copy-prompt-btn" id="copyBtn" title="Скопировать промпт">
-          <i class="fa-regular fa-copy"></i> Копировать
-        </button>
-
-        <code id="promptText">1. РОЛЬ: Действуй как профессиональный Fullstack-разработчик и веб-дизайнер.
-
-2. ЗАДАЧА: Напиши полностью готовый, валидный и красивый код для одного файла index.html. Это должен быть современный, интерактивный лендинг.
-
-3. КОНТЕКСТ И ДАННЫЕ:
-- Название проекта: <span class="placeholder">[Салон красоты "Gloss"]</span>
-- Тематика сайта: <span class="placeholder">[Стильные стрижки, укладки и премиальный маникюр]</span>
-- Целевая аудитория: <span class="placeholder">[Современные девушки, ценящие комфорт, высокое качество и свое время]</span>
-- Главный призыв к действию (CTA): На главном экране должна быть кнопка <span class="placeholder">["Записаться онлайн"]</span>, которая плавно прокручивает страницу вниз к секции <span class="placeholder">["Контакты"]</span>.
-- Структура секций (Контент): Добавь секции: <span class="placeholder">["О нас", "Наши услуги с ценами", "Преимущества", "Галерея работ" и "Контакты"]</span>.
-- Данные для подвала (Footer): Вставь контакты: <span class="placeholder">[г. Москва, ул. Красивая 1; Телефон: +7 (999) 000-00-00; Соцсети: @gloss_beauty]</span>.
-
-4. ФОРМАТ ОТВЕТА: Выдай ОДИН единый блок кода HTML. Внутри него должны быть стили и минимальный JavaScript для плавной прокрутки. Все картинки должны быть качественными фотографиями из Unsplash. Дизайн должен работать сразу после открытия файла в браузере.
-
-5. ВИЗУАЛ И ОГРАНИЧЕНИЯ: 
-- Настроение и стиль: <span class="placeholder">[дорогой, минималистичный, элегантный]</span>.
-- Цветовая гамма: <span class="placeholder">[золотой акцентный, глубокий черный фон и пудровые детали]</span>.
-- Шрифты: <span class="placeholder">[Классический с засечками для заголовков (Playfair Display) и строгий без засечек для текста (Montserrat)]</span>.
-- Эффекты: <span class="placeholder">[Добавь плавные анимации появления элементов при скролле]</span>.
-Код должен быть чистым, адаптивным (для мобильных телефонов) и без ошибок.</code>
+        <div class="wheel-controls" style="background: #ffffff; padding: 40px; border-radius: 24px; box-shadow: 0 10px 40px rgba(30, 41, 59, 0.08); width: 380px; display: flex; flex-direction: column; gap: 20px;">
+          <h3 style="margin: 0; color: #1e293b; font-size: 1.4rem;"><i class="fa-solid fa-list-ol" style="color: #4f46e5;"></i> Список идей</h3>
+          <p style="margin: 0; font-size: 0.9rem; color: #64748b;">Впишите варианты сайтов (каждый с новой строки):</p>
+          <textarea id="wheelIdeas" rows="5" placeholder="Салон красоты&#10;Фотограф&#10;Кофейня" style="width: 100%; padding: 16px; border-radius: 12px; border: 2px solid #e2e8f0; resize: vertical; font-family: inherit; font-size: 1rem; color: #334155; background: #f8fafc; transition: all 0.2s; outline: none;"></textarea>
+          <button id="spinBtn" class="nav-btn" style="justify-content: center; padding: 18px; font-size: 1.2rem; width: 100%; box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);">Крутить колесо! <i class="fa-solid fa-rotate"></i></button>
+          
+          <div id="wheelResult" style="margin-top: 8px; font-weight: 800; font-size: 1.3rem; color: #4f46e5; text-align: center; min-height: 2.6rem; display: flex; align-items: center; justify-content: center; border-radius: 12px; padding: 8px; opacity: 0; transition: opacity 0.3s ease; background: rgba(79, 70, 229, 0.1);"></div>
+        </div>
       </div>
-      <p class="copy-hint"><i class="fa-solid fa-circle-info"></i> Скопируйте текст, настройте значения в синих скобках
-        под себя и отправьте в ИИ-чат.</p>
     </section>
 
-    <section class="slide-container">
+    <section class="slide-container editable-prompt-slide">
+      <span class="slide-number">14 / 17</span>
+      <h2 style="justify-content: center;"><i class="fa-solid fa-pen-to-square"></i> Отредактируем промпт вместе</h2>
+
+      <p style="text-align: center; margin-bottom: 16px; color: #475569;">Кликните на текст в синих рамках, чтобы
+        изменить его под свою идею!</p>
+
+      <div class="mac-window">
+        <div class="mac-header">
+          <div class="mac-dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <div class="mac-title">ТЗ_для_ИИ.txt</div>
+        </div>
+        <div class="editor-content prompt-text-editor">
+          <div class="prompt-body">
+<span style="color: #569cd6;">1. РОЛЬ:</span> Действуй как профессиональный Fullstack-разработчик и веб-дизайнер.<br><br>
+<span style="color: #569cd6;">2. ЗАДАЧА:</span> Напиши полностью готовый, валидный и красивый код для одного файла index.html. Это должен быть современный, интерактивный лендинг.<br><br>
+<span style="color: #569cd6;">3. КОНТЕКСТ И ДАННЫЕ:</span><br>
+- Название проекта: <span contenteditable="true" id="inp-name" class="prompt-input">[ ]</span><br>
+- Тематика сайта: <span contenteditable="true" id="inp-theme" class="prompt-input">[ ]</span><br>
+- Целевая аудитория: <span contenteditable="true" id="inp-aud" class="prompt-input">[ ]</span><br>
+- Главный призыв к действию (CTA): На главном экране должна быть кнопка <span contenteditable="true" id="inp-cta" class="prompt-input">[ ]</span>, которая плавно прокручивает страницу вниз к секции <span contenteditable="true" id="inp-struct-cta" class="prompt-input">[ ]</span>.<br>
+- Структура секций (Контент): Добавь секции: <span contenteditable="true" id="inp-struct" class="prompt-input">[ ]</span>.<br>
+- Данные для подвала (Footer): Вставь контакты: <span contenteditable="true" id="inp-footer" class="prompt-input">[ ]</span>.<br><br>
+<span style="color: #569cd6;">4. ФОРМАТ ОТВЕТА:</span> Выдай ОДИН единый блок кода HTML. Внутри него должны быть стили и минимальный JavaScript для плавной прокрутки. Все картинки должны быть качественными фотографиями из Unsplash. Дизайн должен работать сразу после открытия файла в браузере.<br><br>
+<span style="color: #569cd6;">5. ВИЗУАЛ И ОГРАНИЧЕНИЯ:</span><br>
+- Настроение и стиль: <span contenteditable="true" id="inp-style" class="prompt-input">[ ]</span>.<br>
+- Цветовая гамма: <span contenteditable="true" id="inp-colors" class="prompt-input">[ ]</span>.<br>
+- Шрифты: <span contenteditable="true" id="inp-fonts" class="prompt-input">[ ]</span>.<br>
+- Эффекты: <span contenteditable="true" id="inp-effects" class="prompt-input">[ ]</span>.<br>
+Код должен быть чистым, адаптивным (для мобильных телефонов) и без ошибок.
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 16px; justify-content: center; margin-top: 24px; width: 100%;">
+        <button id="autofillBtn" class="nav-btn" style="width: auto; padding: 14px 28px; font-size: 1rem;"><i class="fa-solid fa-magic"></i> Заполнить автоматически</button>
+        <button id="generateBtn" class="nav-btn" style="width: auto; padding: 14px 28px; font-size: 1rem;">Создать магию <i class="fa-solid fa-bolt"></i></button>
+      </div>
+      <div id="loader" class="loader"><i class="fa-solid fa-spinner fa-spin"></i> ИИ пишет код... Обычно это занимает
+        около 15 секунд.</div>
+    </section>
+
+    <section class="slide-container" id="resultSlideContainer">
       <span class="slide-number">15 / 17</span>
-      <h2><i class="fa-solid fa-list-check"></i> Что мы делаем прямо сейчас</h2>
-      <div class="steps-list">
-        <div class="step-item">
-          <div class="step-num">1</div>
-          <div class="step-content">
-            <h3>Копируем промпт и вставляем свои детали</h3>
-            <p>Замените значения в квадратных скобках на свои — например, вместо салона красоты напишите «Кофейня», а
-              вместо золотого — «коричневый, бежевый»</p>
-          </div>
-          <i class="fa-solid fa-copy step-icon"></i>
+      <h2 style="margin-bottom: 16px;"><i class="fa-solid fa-check-circle" style="color: #16a34a;"></i> Готово! Ваш
+        первый сайт</h2>
+      <div class="result-success-content"
+        style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 32px; height: 100%; text-align: center;">
+
+        <div style="font-size: 1.2rem; color: #475569; max-width: 600px; margin: 0 auto;">
+          Сайт успешно сгенерирован и сохранен на сервере! Теперь это полноценная отдельная веб-страница.
         </div>
-        <div class="step-item">
-          <div class="step-num">2</div>
-          <div class="step-content">
-            <h3>Отправляем в ИИ</h3>
-            <p>Вставьте готовый текст в ChatGPT, Claude или другой чат с нейросетью и дождитесь генерации полного кода
-            </p>
+
+        <a href="#" target="_blank" id="siteLink" class="nav-btn"
+          style="text-decoration: none; display: inline-block; width: auto; margin: 0;"><i
+            class="fa-solid fa-external-link-alt"></i> Открыть сайт ученика</a>
+
+        <div
+          style="display: flex; flex-direction: column; align-items: center; gap: 16px; background: #f8fafc; padding: 32px; border-radius: 16px; border: 1px solid #e2e8f0; margin-top: 24px;">
+          <div>
+            <div class="qr-hint">Поделиться с телефона</div>
+            <div class="qr-subhint">Студент может отсканировать QR-код, чтобы сразу открыть свой сайт</div>
           </div>
-          <i class="fa-solid fa-paper-plane step-icon"></i>
+          <div class="qr-container" id="qrcode"></div>
         </div>
-        <div class="step-item">
-          <div class="step-num">3</div>
-          <div class="step-content">
-            <h3>Создаём файл index.html</h3>
-            <p>На компьютере создайте новый текстовый файл, назовите его index.html и вставьте туда весь скопированный
-              HTML-код</p>
-          </div>
-          <i class="fa-solid fa-file-code step-icon"></i>
-        </div>
-        <div class="step-item">
-          <div class="step-num">4</div>
-          <div class="step-content">
-            <h3>Открываем через браузер</h3>
-            <p>Дважды кликните по файлу index.html — ваш профессиональный премиум-сайт мгновенно откроется и будет
-              работать!</p>
-          </div>
-          <i class="fa-solid fa-globe step-icon"></i>
-        </div>
+
       </div>
     </section>
 
@@ -2314,9 +3042,17 @@
 
     let currentSlideIndex = 0;
     const totalSlides = slides.length;
+    let isSiteGenerated = false; // Блокировка 15-го слайда
 
     function updateSlider() {
       slides.forEach((slide, index) => {
+        // Auto-update slide numbers dynamically
+        const slideNumElement = slide.querySelector('.slide-number');
+        if (slideNumElement) {
+          const numStr = String(index + 1).padStart(2, '0');
+          slideNumElement.textContent = `${numStr} / ${totalSlides}`;
+        }
+
         if (index === currentSlideIndex) {
           slide.classList.add('active');
           slide.scrollTop = 0;
@@ -2332,6 +3068,14 @@
       progressBar.style.width = `${progressPercent}%`;
     }
 
+    function checkSlideLock() {
+      if (currentSlideIndex === 19 && !isSiteGenerated) {
+        alert('Сначала создайте магию (сгенерируйте сайт), чтобы перейти дальше!');
+        return false;
+      }
+      return true;
+    }
+
     prevBtn.addEventListener('click', () => {
       if (currentSlideIndex > 0) {
         currentSlideIndex--;
@@ -2340,15 +3084,20 @@
     });
 
     nextBtn.addEventListener('click', () => {
-      if (currentSlideIndex < totalSlides - 1) {
+      if (checkSlideLock() && currentSlideIndex < totalSlides - 1) {
         currentSlideIndex++;
         updateSlider();
       }
     });
 
     document.addEventListener('keydown', (e) => {
+      // Игнорируем нажатия внутри текстовых полей, чтобы можно было печатать
+      if (e.target.tagName.toLowerCase() === 'textarea' || e.target.tagName.toLowerCase() === 'input') {
+        return;
+      }
+
       if (e.key === 'ArrowRight' || e.key === ' ') {
-        if (currentSlideIndex < totalSlides - 1) {
+        if (checkSlideLock() && currentSlideIndex < totalSlides - 1) {
           e.preventDefault();
           currentSlideIndex++;
           updateSlider();
@@ -2362,77 +3111,309 @@
       }
     });
 
-    // Супер-надежная логика копирования промпта (работает везде)
-    const copyBtn = document.getElementById('copyBtn');
-    const promptText = document.getElementById('promptText');
+    // Логика отправки промпта
+    const generateBtn = document.getElementById('generateBtn');
+    const loader = document.getElementById('loader');
+    const siteLink = document.getElementById('siteLink');
 
-    copyBtn.addEventListener('click', (e) => {
-      e.stopPropagation(); // Предотвращаем переключение слайдов
+    const inputsIds = ['inp-name', 'inp-theme', 'inp-aud', 'inp-cta', 'inp-struct-cta', 'inp-struct', 'inp-footer', 'inp-style', 'inp-colors', 'inp-fonts', 'inp-effects'];
 
-      // Функция визуального подтверждения
-      const showSuccess = () => {
-        copyBtn.classList.add('copied');
-        copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Скопировано!';
-        setTimeout(() => {
-          copyBtn.classList.remove('copied');
-          copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Копировать';
-        }, 2000);
-      };
+    const defaultValues = {
+      'inp-name': '[Салон красоты "Gloss"]',
+      'inp-theme': '[Стильные стрижки, укладки и премиальный маникюр]',
+      'inp-aud': '[Современные девушки, ценящие комфорт, высокое качество и свое время]',
+      'inp-cta': '["Записаться онлайн"]',
+      'inp-struct-cta': '["Контакты"]',
+      'inp-struct': '["О нас", "Наши услуги с ценами", "Преимущества", "Галерея работ" и "Контакты"]',
+      'inp-footer': '[г. Москва, ул. Красивая 1; Телефон: +7 (999) 000-00-00; Соцсети: @gloss_beauty]',
+      'inp-style': '[дорогой, минималистичный, элегантный]',
+      'inp-colors': '[золотой акцентный, глубокий черный фон и пудровые детали]',
+      'inp-fonts': '[Классический с засечками для заголовков (Playfair Display) и строгий без засечек для текста (Montserrat)]',
+      'inp-effects': '[Добавь плавные анимации появления элементов при скролле]'
+    };
 
-      const showError = () => {
-        copyBtn.innerHTML = '<i class="fa-solid fa-xmark"></i> Ошибка';
-        setTimeout(() => {
-          copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Копировать';
-        }, 2000);
-      };
+    // Логика колеса фортуны
+    const wheelCanvas = document.getElementById('wheelCanvas');
+    const wheelIdeas = document.getElementById('wheelIdeas');
+    const spinBtn = document.getElementById('spinBtn');
+    const wheelResult = document.getElementById('wheelResult');
+    const ctx = wheelCanvas ? wheelCanvas.getContext('2d') : null;
 
-      // Получаем чистый текст
-      const textToCopy = promptText.innerText || promptText.textContent;
+    let currentRotation = 0;
+    let isSpinning = false;
 
-      // Способ 1: Использование современного API (если доступно)
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(textToCopy)
-          .then(showSuccess)
-          .catch(() => fallbackCopy(textToCopy)); // Если не вышло, пробуем способ 2
-      } else {
-        // Способ 2: Надежный запасной вариант (для локальных файлов file://)
-        fallbackCopy(textToCopy);
+    const getIdeas = () => wheelIdeas ? wheelIdeas.value.split('\n').map(i => i.trim()).filter(i => i) : [];
+
+    function drawWheel() {
+      if (!ctx) return;
+      const ideas = getIdeas();
+      const numSlices = ideas.length || 1;
+      const sliceAngle = (2 * Math.PI) / numSlices;
+      const colors = ideas.length > 0 
+        ? ['#ef4444', '#f97316', '#f59e0b', '#84cc16', '#10b981', '#06b6d4', '#3b82f6', '#6366f1', '#a855f7', '#ec4899'] 
+        : ['#cbd5e1']; // Серый цвет, если пусто
+
+      ctx.clearRect(0, 0, 400, 400);
+      ctx.save();
+      ctx.translate(200, 200);
+      ctx.rotate(currentRotation);
+
+      for (let i = 0; i < numSlices; i++) {
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, 190, i * sliceAngle, (i + 1) * sliceAngle);
+        ctx.lineTo(0, 0);
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#ffffff';
+        ctx.stroke();
+
+        // Рисуем текст
+        ctx.save();
+        const angle = numSlices === 1 ? -Math.PI / 2 : i * sliceAngle + sliceAngle / 2;
+        ctx.rotate(angle);
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = ideas.length > 0 ? '#ffffff' : '#64748b';
+        ctx.font = 'bold 20px "Inter", sans-serif';
+        
+        const text = ideas.length > 0 ? ideas[i] : 'Добавьте идеи...';
+        const shortText = text.length > 15 ? text.substring(0, 14) + '...' : text;
+        
+        if (numSlices === 1) {
+          ctx.textAlign = 'center';
+          ctx.fillText(shortText, 0, -100);
+        } else {
+          ctx.textAlign = 'right';
+          ctx.fillText(shortText, 170, 0);
+        }
+        ctx.restore();
       }
 
-      function fallbackCopy(text) {
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        
-        // Делаем элемент скрытым, но активным для выделения
-        textArea.style.position = 'fixed';
-        textArea.style.top = '0';
-        textArea.style.left = '0';
-        textArea.style.opacity = '0';
-        
-        document.body.appendChild(textArea);
-        
-        // Фокус и выделение специально для всех типов устройств, включая мобильные
-        textArea.focus();
-        textArea.select();
-        try {
-          textArea.setSelectionRange(0, 99999);
-        } catch (e) {}
+      // Центр колеса
+      ctx.beginPath();
+      ctx.arc(0, 0, 24, 0, 2 * Math.PI);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = '#f8fafc';
+      ctx.stroke();
 
-        try {
-          const successful = document.execCommand('copy');
-          if (successful) {
-            showSuccess();
+      ctx.restore();
+    }
+
+    if (wheelIdeas) {
+      wheelIdeas.addEventListener('input', drawWheel);
+      drawWheel();
+    }
+
+    if (spinBtn) {
+      spinBtn.addEventListener('click', () => {
+        const ideas = getIdeas();
+        if (ideas.length === 0 || isSpinning) return;
+        isSpinning = true;
+        wheelResult.textContent = 'Крутим...';
+        wheelResult.style.opacity = '1';
+        
+        const spins = 5 + Math.random() * 5;
+        const extraDegrees = Math.random() * 2 * Math.PI;
+        const targetRotation = currentRotation + spins * 2 * Math.PI + extraDegrees;
+        const duration = 4000;
+        const startTime = performance.now();
+        const startRotation = currentRotation;
+
+        function animate(time) {
+          const elapsed = time - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          
+          const easeProgress = 1 - Math.pow(1 - progress, 4);
+          
+          currentRotation = startRotation + (targetRotation - startRotation) * easeProgress;
+          drawWheel();
+
+          if (progress < 1) {
+            requestAnimationFrame(animate);
           } else {
-            showError();
+            isSpinning = false;
+            const normalizedRotation = currentRotation % (2 * Math.PI);
+            const sliceAngle = (2 * Math.PI) / ideas.length;
+            const topAngle = (3 * Math.PI / 2 - normalizedRotation + 4 * Math.PI) % (2 * Math.PI);
+            const winningIndex = Math.floor(topAngle / sliceAngle);
+            const winner = ideas[winningIndex];
+            
+            wheelResult.textContent = `Выпало: ${winner}!`;
+            wheelResult.style.opacity = '1';
+            
+            defaultValues['inp-theme'] = `[${winner}]`;
+            defaultValues['inp-name'] = `[Проект "${winner}"]`;
+            
+            if (typeof confetti !== 'undefined') {
+              confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+              });
+            }
           }
-        } catch (err) {
-          console.error('Ошибка копирования:', err);
-          showError();
+        }
+        requestAnimationFrame(animate);
+      });
+    }
+
+    // Autofill button logic
+    const autofillBtn = document.getElementById('autofillBtn');
+    if (autofillBtn) {
+      autofillBtn.addEventListener('click', () => {
+        inputsIds.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.innerText = defaultValues[id];
+        });
+        localStorage.setItem('lessonSavedData', JSON.stringify(defaultValues));
+      });
+    }
+
+    // Восстанавливаем промпт из localStorage, если он там есть
+    const savedData = JSON.parse(localStorage.getItem('lessonSavedData') || '{}');
+    inputsIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (savedData[id]) el.innerText = savedData[id];
+      // Сохраняем каждое изменение текста в localStorage
+      el.addEventListener('input', () => {
+        savedData[id] = el.innerText;
+        localStorage.setItem('lessonSavedData', JSON.stringify(savedData));
+      });
+    });
+
+    generateBtn.addEventListener('click', async () => {
+      // Собираем текст из полей
+      const projectName = document.getElementById('inp-name').innerText.trim();
+      const theme = document.getElementById('inp-theme').innerText.trim();
+      const targetAudience = document.getElementById('inp-aud').innerText.trim();
+      const ctaBtn = document.getElementById('inp-cta').innerText.trim();
+      const ctaTarget = document.getElementById('inp-struct-cta').innerText.trim();
+      const struct = document.getElementById('inp-struct').innerText.trim();
+      const footer = document.getElementById('inp-footer').innerText.trim();
+      const designStyle = document.getElementById('inp-style').innerText.trim();
+      const themeColors = document.getElementById('inp-colors').innerText.trim();
+      const fonts = document.getElementById('inp-fonts').innerText.trim();
+      const effects = document.getElementById('inp-effects').innerText.trim();
+
+      if (!projectName || projectName === '[ ]' || projectName === '[]') {
+        alert('Пожалуйста, заполните переменные в промпте (или нажмите "Заполнить автоматически")!');
+        return;
+      }
+
+      const userPrompt = `
+1. РОЛЬ: Действуй как профессиональный Fullstack-разработчик и веб-дизайнер.
+
+2. ЗАДАЧА: Напиши полностью готовый, валидный и красивый код для одного файла index.html. Это должен быть современный, интерактивный лендинг.
+
+3. КОНТЕКСТ И ДАННЫЕ:
+- Название проекта: ${projectName}
+- Тематика сайта: ${theme}
+- Целевая аудитория: ${targetAudience}
+- Главный призыв к действию (CTA): На главном экране должна быть кнопка ${ctaBtn}, которая плавно прокручивает страницу вниз к секции ${ctaTarget}.
+- Структура секций (Контент): Добавь секции: ${struct}.
+- Данные для подвала (Footer): Вставь контакты: ${footer}.
+
+4. ФОРМАТ ОТВЕТА: Выдай ОДИН единый блок кода HTML. Внутри него должны быть стили и минимальный JavaScript для плавной прокрутки. Все картинки должны быть качественными фотографиями из Unsplash. Дизайн должен работать сразу после открытия файла в браузере.
+
+5. ВИЗУАЛ И ОГРАНИЧЕНИЯ:
+- Настроение и стиль: ${designStyle}.
+- Цветовая гамма: ${themeColors}.
+- Шрифты: ${fonts}.
+- Эффекты: ${effects}.
+Код должен быть чистым, адаптивным (для мобильных телефонов) и без ошибок.
+      `.trim();
+
+      // Скрытый системный промпт для гарантированно крутого результата
+      const promptText = `
+Сгенерируй профессиональный, невероятно красивый и современный HTML/CSS/JS сайт в один файл (всё внутри).
+Сайт ОБЯЗАН быть адаптивным (mobile-friendly) и использовать современные подходы: Flexbox, CSS Grid.
+Используй красивые тени, мягкие закругления (border-radius: 16px+), градиенты, эффекты наведения (hover) и плавные переходы (transitions). Дизайн должен выглядеть на миллион долларов (Premium Quality).
+
+ВОТ ТОЧНЫЕ УКАЗАНИЯ ОТ КЛИЕНТА (СОБЛЮДАЙ ИХ СТРОГО):
+
+${userPrompt}
+
+ОБЯЗАТЕЛЬНО:
+- Включи FontAwesome для иконок и Google Fonts (например, Inter или Montserrat).
+- Не используй lorem ipsum, придумай осмысленный продающий текст на основе контекста!
+- Сделай красивую шапку и подвал.
+- ВАЖНО ПРО КАРТИНКИ: Если используешь тег <img>, используй ТОЛЬКО реально работающие ссылки из интернета (например, https://picsum.photos/800/600 или https://placehold.co/600x400). Никогда не пиши локальные пути (типа img/photo.jpg), иначе картинки будут сломаны! Лучше вообще используй крутые CSS-градиенты и иконки вместо фото.
+      `.trim();
+
+      generateBtn.disabled = true;
+      loader.style.display = 'block';
+
+      try {
+        const response = await fetch('/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt: promptText })
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
         }
 
-        document.body.removeChild(textArea);
+        const data = await response.json();
+
+        // Получаем IP-адрес хоста или домен, чтобы QR-код был доступен в локальной сети
+        let baseUrl = window.location.origin;
+        // Если открыт как localhost, но нужно дать доступ с телефона, лучше показать IP
+        if (baseUrl.includes('localhost') && data.localIp) {
+          baseUrl = `http://${data.localIp}:${window.location.port}`;
+        }
+
+        // Если сервер вернул абсолютный URL (Vercel Blob), используем его, иначе клеим с baseUrl
+        const fullUrl = data.url.startsWith('http') ? data.url : baseUrl + data.url;
+
+        siteLink.href = fullUrl;
+
+        document.getElementById('qrcode').innerHTML = '';
+        new QRCode(document.getElementById('qrcode'), {
+          text: fullUrl,
+          width: 200,
+          height: 200,
+          colorDark: "#1e293b",
+          colorLight: "#ffffff",
+          correctLevel: QRCode.CorrectLevel.H
+        });
+
+        // Снимаем блокировку
+        isSiteGenerated = true;
+
+        // Переходим на следующий слайд (результат)
+        if (currentSlideIndex < totalSlides - 1) {
+          currentSlideIndex++;
+          updateSlider();
+        }
+
+      } catch (error) {
+        alert('Произошла ошибка при генерации сайта. Проверьте запущен ли сервер server.js и есть ли ключ Gemini.');
+        console.error(error);
+      } finally {
+        generateBtn.disabled = false;
+        loader.style.display = 'none';
       }
     });
+
+    // Инициализируем слайдер при загрузке страницы, чтобы обновить номера
+    updateSlider();
+  </script>
+
+  <!-- Live Reload Script -->
+  <script>
+    if (window.EventSource) {
+      const evtSource = new EventSource("/livereload");
+      evtSource.onmessage = function (event) {
+        if (event.data === "reload") {
+          console.log("Live reload triggered by server!");
+          window.location.reload();
+        }
+      };
+    }
   </script>
 
 </body>

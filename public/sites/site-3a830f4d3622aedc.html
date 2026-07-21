@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEON | Premium Night Club & Lounge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#ff007a',
+                        secondary: '#7000ff',
+                        dark: '#05070a',
+                        accent: '#00f2ff'
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #05070a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        .neon-text {
+            text-shadow: 0 0 10px rgba(255, 0, 122, 0.8), 0 0 20px rgba(255, 0, 122, 0.5);
+        }
+        .neon-border {
+            box-shadow: 0 0 15px rgba(255, 0, 122, 0.3);
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .is-visible {
+            opacity: 1 !important;
+            transform: translateY(0);
+        }
+        .gradient-bg {
+            background: radial-gradient(circle at top right, rgba(112, 0, 255, 0.15), transparent),
+                        radial-gradient(circle at bottom left, rgba(255, 0, 122, 0.15), transparent);
+        }
+    </style>
+</head>
+<body class="font-sans">
+
+    <!-- Навигация -->
+    <nav class="fixed w-full z-50 px-6 py-6 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="text-3xl font-black tracking-tighter italic">
+                <span class="text-primary neon-text">NE</span>ON
+            </div>
+            <div class="hidden md:flex space-x-12 font-semibold uppercase text-sm tracking-widest">
+                <a href="#home" class="hover:text-primary transition-colors">Главная</a>
+                <a href="#services" class="hover:text-primary transition-colors">Шоу</a>
+                <a href="#benefits" class="hover:text-primary transition-colors">Привилегии</a>
+                <a href="#booking" class="hover:text-primary transition-colors text-primary border-b border-primary/30">Резерв</a>
+            </div>
+            <button class="md:hidden text-2xl"><i class="fa-solid fa-bars"></i></button>
+        </div>
+    </nav>
+
+    <!-- Главный экран -->
+    <header id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-dark/60 to-dark"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/20 rounded-full blur-[120px] animate-pulse-slow"></div>
+        </div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
+            <h1 class="text-6xl md:text-9xl font-black mb-8 leading-tight animate-on-scroll">
+                ИСКУССТВО <br>
+                <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent italic">СОБЛАЗНА</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-300 mb-12 max-w-2xl mx-auto font-light leading-relaxed animate-on-scroll" style="transition-delay: 200ms;">
+                Премиальное пространство в самом сердце столицы. Место, где гаснет свет и оживают ваши самые смелые фантазии.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-6 justify-center animate-on-scroll" style="transition-delay: 400ms;">
+                <a href="#booking" class="px-10 py-5 bg-gradient-to-r from-primary to-secondary rounded-full font-bold uppercase tracking-widest shadow-lg shadow-primary/25 hover:scale-105 hover:shadow-primary/40 transition-all">
+                    Забронировать VIP
+                </a>
+                <a href="#services" class="px-10 py-5 glass rounded-full font-bold uppercase tracking-widest hover:bg-white/10 transition-all border border-white/20">
+                    Наши Шоу
+                </a>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center animate-bounce opacity-50">
+            <span class="text-[10px] uppercase tracking-[0.3em] mb-2">Scroll</span>
+            <div class="w-px h-12 bg-gradient-to-b from-primary to-transparent"></div>
+        </div>
+    </header>
+
+    <!-- Секция Услуг -->
+    <section id="services" class="py-32 relative gradient-bg">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-20 animate-on-scroll">
+                <h2 class="text-4xl md:text-6xl font-extrabold mb-6 uppercase tracking-tighter">Наши <span class="text-primary italic">Программы</span></h2>
+                <div class="w-24 h-1 bg-primary mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <!-- Карта 1 -->
+                <div class="group relative h-[500px] rounded-3xl overflow-hidden glass animate-on-scroll">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/20 to-transparent z-10"></div>
+                    <div class="absolute inset-0 bg-[url('https://placehold.co/600x800/201020/ff007a?text=Private+Dance')] bg-cover bg-center group-hover:scale-110 transition-transform duration-700"></div>
+                    <div class="absolute bottom-0 left-0 p-8 z-20">
+                        <i class="fa-solid fa-champagne-glasses text-primary text-3xl mb-4"></i>
+                        <h3 class="text-2xl font-bold mb-2">Приватные Танцы</h3>
+                        <p class="text-gray-400 mb-6">Атмосфера полной конфиденциальности и эстетического наслаждения.</p>
+                        <div class="h-1 w-0 group-hover:w-full bg-primary transition-all duration-500"></div>
+                    </div>
+                </div>
+
+                <!-- Карта 2 -->
+                <div class="group relative h-[500px] rounded-3xl overflow-hidden glass animate-on-scroll" style="transition-delay: 200ms;">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/20 to-transparent z-10"></div>
+                    <div class="absolute inset-0 bg-[url('https://placehold.co/600x800/102030/00f2ff?text=Stage+Show')] bg-cover bg-center group-hover:scale-110 transition-transform duration-700"></div>
+                    <div class="absolute bottom-0 left-0 p-8 z-20">
+                        <i class="fa-solid fa-masks-theater text-accent text-3xl mb-4"></i>
+                        <h3 class="text-2xl font-bold mb-2">Тематические Шоу</h3>
+                        <p class="text-gray-400 mb-6">Каждую ночь уникальные постановки от лучших хореографов страны.</p>
+                        <div class="h-1 w-0 group-hover:w-full bg-accent transition-all duration-500"></div>
+                    </div>
+                </div>
+
+                <!-- Карта 3 -->
+                <div class="group relative h-[500px] rounded-3xl overflow-hidden glass animate-on-scroll" style="transition-delay: 400ms;">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/20 to-transparent z-10"></div>
+                    <div class="absolute inset-0 bg-[url('https://placehold.co/600x800/200030/7000ff?text=Cigar+Lounge')] bg-cover bg-center group-hover:scale-110 transition-transform duration-700"></div>
+                    <div class="absolute bottom-0 left-0 p-8 z-20">
+                        <i class="fa-solid fa-whiskey-glass text-secondary text-3xl mb-4"></i>
+                        <h3 class="text-2xl font-bold mb-2">VIP Караоке & Бар</h3>
+                        <p class="text-gray-400 mb-6">Элитный алкоголь, редкие сигары и премиальный звук для вашего отдыха.</p>
+                        <div class="h-1 w-0 group-hover:w-full bg-secondary transition-all duration-500"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Преимущества -->
+    <section id="benefits" class="py-32 bg-dark">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                <div class="animate-on-scroll">
+                    <span class="text-primary font-bold tracking-[0.3em] uppercase mb-4 block">Почему выбирают нас</span>
+                    <h2 class="text-5xl font-black mb-10 leading-tight">ВАШ КОМФОРТ — <br><span class="italic underline decoration-primary">НАШ ПРИОРИТЕТ</span></h2>
+                    
+                    <div class="space-y-8">
+                        <div class="flex gap-6 group">
+                            <div class="flex-shrink-0 w-16 h-16 rounded-2xl glass flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                                <i class="fa-solid fa-shield-halved text-primary text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">Полная Анонимность</h4>
+                                <p class="text-gray-400">Мы гарантируем абсолютную приватность. Система "Без телефонов" и закрытая парковка.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-6 group">
+                            <div class="flex-shrink-0 w-16 h-16 rounded-2xl glass flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                                <i class="fa-solid fa-star text-primary text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">Сервис 5 Звезд</h4>
+                                <p class="text-gray-400">Персональные менеджеры, лучшие бармены и мастерицы танца, прошедшие жесткий отбор.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-6 group">
+                            <div class="flex-shrink-0 w-16 h-16 rounded-2xl glass flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                                <i class="fa-solid fa-gem text-primary text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">Эксклюзивный Интерьер</h4>
+                                <p class="text-gray-400">Дизайнерская мебель, правильный неоновый свет и акустика, создающая нужный вайб.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative animate-on-scroll">
+                    <div class="aspect-square rounded-3xl bg-gradient-to-br from-primary/40 to-secondary/30 relative overflow-hidden flex items-center justify-center group hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500">
+                         <i class="fa-solid fa-crown text-[160px] text-white/10 group-hover:scale-110 transition-transform duration-700"></i>
+                         <div class="absolute inset-0 border-[20px] border-dark m-8 rounded-2xl"></div>
+                    </div>
+                    <!-- Плашка статистики -->
+                    <div class="absolute -bottom-10 -left-10 glass p-8 rounded-3xl shadow-2xl hidden md:block">
+                        <div class="text-4xl font-black text-primary mb-1">50+</div>
+                        <div class="text-sm font-bold uppercase tracking-widest text-gray-300">Артисток</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA / Резерв -->
+    <section id="booking" class="py-32 relative overflow-hidden">
+        <div class="absolute inset-0 bg-primary/5"></div>
+        <div class="max-w-4xl mx-auto px-6 relative z-10 text-center animate-on-scroll">
+            <h2 class="text-5xl md:text-7xl font-black mb-12">ГОТОВЫ К <span class="text-primary italic">НОЧИ?</span></h2>
+            <div class="glass p-12 rounded-[40px] border-primary/20">
+                <p class="text-xl text-gray-300 mb-10 italic">"Оставьте заявку сейчас, и наш VIP-хостес предложит лучшие условия для вашего отдыха."</p>
+                <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <input type="text" placeholder="Ваше Имя" class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-primary transition-all">
+                    <input type="tel" placeholder="+7 (___) ___-__-__" class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-primary transition-all">
+                    <button class="md:col-span-2 w-full py-5 bg-white text-dark font-black uppercase tracking-widest rounded-2xl hover:bg-primary hover:text-white transition-all transform hover:-translate-y-1">
+                        Получить приглашение
+                    </button>
+                </form>
+                <p class="mt-6 text-xs text-gray-500 uppercase tracking-widest">Строго 18+ | Face Control | Dress Code</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="py-20 border-t border-white/5 bg-black">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-12">
+                <div class="text-center md:text-left">
+                    <div class="text-4xl font-black italic mb-4"><span class="text-primary">NE</span>ON</div>
+                    <p class="text-gray-500 max-w-xs">Лучший премиум-клуб города. Мы работаем каждую ночь до последнего гостя.</p>
+                </div>
+                
+                <div class="flex gap-8">
+                    <a href="#" class="w-14 h-14 rounded-full glass flex items-center justify-center hover:text-primary transition-all text-xl"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="w-14 h-14 rounded-full glass flex items-center justify-center hover:text-primary transition-all text-xl"><i class="fa-brands fa-telegram"></i></a>
+                    <a href="#" class="w-14 h-14 rounded-full glass flex items-center justify-center hover:text-primary transition-all text-xl"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+
+                <div class="text-center md:text-right">
+                    <div class="text-xl font-bold mb-2">+7 (999) 000-00-00</div>
+                    <div class="text-gray-500 text-sm">Москва, ул. Ночная, стр. 69</div>
+                </div>
+            </div>
+            <div class="mt-20 pt-8 border-t border-white/5 text-center text-gray-600 text-xs uppercase tracking-widest">
+                © 2023 NEON CLUB. ALL RIGHTS RESERVED.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Анимация при скролле
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Эффект навигации при скролле
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('bg-black/80', 'backdrop-blur-md', 'py-4');
+                nav.classList.remove('py-6');
+            } else {
+                nav.classList.remove('bg-black/80', 'backdrop-blur-md', 'py-4');
+                nav.classList.add('py-6');
+            }
+        });
+    </script>
+</body>
+</html>
