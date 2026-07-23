@@ -63,42 +63,13 @@ ${prompt}
     const fileId = Math.random().toString(36).substring(2, 10);
     const fileName = `site-${fileId}.html`;
 
-    const isVercel = process.env.VERCEL;
-    const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
+    const blob = await put(fileName, htmlCode, {
+      access: 'public',
+      contentType: 'text/html',
+      token: process.env.BLOB_READ_WRITE_TOKEN || import.meta.env.BLOB_READ_WRITE_TOKEN
+    });
 
-    if (isVercel || blobToken) {
-      if (!blobToken) {
-         throw new Error("BLOB_READ_WRITE_TOKEN is missing!");
-      }
-      const blob = await put(fileName, htmlCode, {
-        access: 'public',
-        contentType: 'text/html',
-        token: blobToken
-      });
-      return new Response(JSON.stringify({ url: `/api/view?url=${encodeURIComponent(blob.url)}` }), { status: 200, headers: { 'Content-Type': 'application/json' } });
-    } else {
-      // Local dev saving
-      const fs = await import('fs');
-      const path = await import('path');
-      const os = await import('os');
-      
-      const sitesDir = path.join(process.cwd(), 'public', 'local-sites');
-      if (!fs.existsSync(sitesDir)) fs.mkdirSync(sitesDir, { recursive: true });
-      
-      const filePath = path.join(sitesDir, fileName);
-      fs.writeFileSync(filePath, htmlCode);
-
-      const interfaces = os.networkInterfaces();
-      let localIp = '';
-      for (const name of Object.keys(interfaces)) {
-          for (const iface of interfaces[name]) {
-              if (iface.family === 'IPv4' && !iface.internal) {
-                  localIp = iface.address;
-              }
-          }
-      }
-      return new Response(JSON.stringify({ url: `/local-sites/${fileName}`, localIp }), { status: 200, headers: { 'Content-Type': 'application/json' } });
-    }
+    return new Response(JSON.stringify({ url: `/api/view?url=${encodeURIComponent(blob.url)}` }), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
   } catch (error) {
     console.error('Error:', error);
