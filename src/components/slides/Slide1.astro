@@ -1,0 +1,147 @@
+---
+// Slide1
+---
+<section class="slide-container slide-title active">
+      <span class="slide-number">01 / 16</span>
+      <div class="title-icon">
+        <i class="fa-solid fa-bolt"></i>
+      </div>
+      <h1>Сайт за один урок.<br><span class="gradient-blue">С помощью ИИ.</span></h1>
+      <p class="subtitle">Без кода. Без опыта. Без долгого обучения.</p>
+      <div class="title-tags">
+        <span class="title-tag blue"><i class="fa-solid fa-bolt"></i> Быстро</span>
+        <span class="title-tag green"><i class="fa-solid fa-robot"></i> С помощью ИИ</span>
+        <span class="title-tag gold"><i class="fa-solid fa-sack-dollar"></i> Практично</span>
+      </div>
+    </section>
+
+<style is:global>
+/* Slide 1 — Title */
+.slide-title {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: #ffffff;
+}
+
+.slide-title .title-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 28px;
+  box-shadow: 0 8px 32px rgba(79, 70, 229, 0.25);
+  animation: float 3s ease-in-out infinite;
+}
+
+.slide-title .title-icon i {
+  font-size: 38px;
+  color: #ffffff;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.slide-title h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #1e293b;
+  line-height: 1.2;
+  max-width: 700px;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+
+.slide-title h1 .gradient-blue {
+  background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: hueShift 5s infinite alternate;
+}
+
+@keyframes hueShift {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+
+  100% {
+    filter: hue-rotate(30deg);
+  }
+}
+
+.slide-title .subtitle {
+  font-size: 1.15rem;
+  color: #64748b;
+  max-width: 500px;
+  font-weight: 400;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.slide-title .title-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.slide-title .title-tag {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  padding: 10px 22px;
+  font-size: 0.9rem;
+  color: #475569;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.slide-title .title-tag i {
+  font-size: 15px;
+}
+
+.slide-title .title-tag.blue i {
+  color: #2563eb;
+}
+
+.slide-title .title-tag.green i {
+  color: #16a34a;
+}
+
+.slide-title .title-tag.gold i {
+  color: #d97706;
+}
+
+/* Common headings */
+h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  letter-spacing: -0.02em;
+}
+
+h2 i {
+  background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 1.8rem;
+}
+</style>

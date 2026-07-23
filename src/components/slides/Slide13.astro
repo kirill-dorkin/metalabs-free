@@ -1,0 +1,468 @@
+---
+// Slide13
+---
+<section class="slide-container">
+      <span class="slide-number">10 / 16</span>
+      <h2><i class="fa-solid fa-microchip"></i> HTML + CSS + JS — умный дом</h2>
+      <p class="house-text" style="margin-bottom: 24px;">Добавляем <strong>JavaScript</strong> — и дом становится умным,
+        живым, реагирует на действия.</p>
+      <div class="house-slide">
+        <div class="house-left">
+          <div class="house-badge gold">
+            <i class="fa-solid fa-code"></i> HTML + CSS + JS
+          </div>
+          <p class="house-text">JS — это <strong>автоматизация и интерактив</strong>: кнопки света, автоматические
+            шторы, датчики движения. Дом начинает «думать».</p>
+        </div>
+        <div class="house-right">
+          <div class="house-element">
+            <div class="he-icon purple"><i class="fa-solid fa-bolt"></i></div>
+            <div class="he-content">
+              <h3>Кнопки и события</h3>
+              <p>Нажал кнопку — включился свет. Клик по кнопке — открылось меню, появился попап</p>
+            </div>
+          </div>
+          <div class="house-element">
+            <div class="he-icon orange"><i class="fa-solid fa-rotate"></i></div>
+            <div class="he-content">
+              <h3>Анимации и переходы</h3>
+              <p>Плавное появление блоков при скролле, слайдеры, выпадающие списки — дом «оживает»</p>
+            </div>
+          </div>
+          <div class="house-element">
+            <div class="he-icon green"><i class="fa-solid fa-database"></i></div>
+            <div class="he-content">
+              <h3>Данные и логика</h3>
+              <p>Формы, валидация, загрузка данных — дом принимает решения на основе того, что происходит</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<style is:global>
+/* Slide 13 — Prompt structure */
+.prompt-structure {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex: 1;
+}
+
+.ps-intro {
+  font-size: 1.15rem;
+  color: #475569;
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+
+.ps-intro strong {
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.ps-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+}
+
+.ps-step {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  padding: 16px 20px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+}
+
+.ps-step:hover {
+  box-shadow: 0 12px 30px rgba(79, 70, 229, 0.08);
+  transform: translateY(-2px);
+}
+
+/* Стили для слайда с китами */
+.slide-full-img {
+  padding: 0;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+}
+
+.whale-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.whale-title {
+  position: absolute;
+  top: 50px;
+  text-align: center;
+  z-index: 10;
+  width: 100%;
+}
+
+.whale-title h2 {
+  display: block;
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 0;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.whale-title .gradient-text {
+  background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.pillar-full-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.9;
+}
+
+.whale-labels {
+  position: absolute;
+  bottom: 5%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  padding: 0 50px;
+  z-index: 10;
+}
+
+.whale-label {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  padding: 20px 30px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transform: translateY(0);
+  transition: all 0.3s ease;
+  width: 250px;
+}
+
+.whale-label:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.whale-label h3 {
+  font-size: 2rem;
+  font-weight: 900;
+  margin-bottom: 5px;
+}
+
+.whale-label p {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 5px;
+}
+
+.whale-label span {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.label-html h3 {
+  color: #f97316;
+}
+
+.label-css h3 {
+  color: #3b82f6;
+}
+
+.label-js h3 {
+  color: #eab308;
+}
+
+/* Окно редактора промпта (Стиль светлого стекла) */
+.mac-window {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 32px auto;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+}
+
+.mac-header {
+  background: rgba(255, 255, 255, 0.5);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.mac-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.mac-dots .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.mac-dots .red {
+  background: #ff5f56;
+}
+
+.mac-dots .yellow {
+  background: #ffbd2e;
+}
+
+.mac-dots .green {
+  background: #27c93f;
+}
+
+.mac-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  color: #475569;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.editor-content {
+  padding: 20px 24px;
+  color: #334155;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 15px;
+  line-height: 1.6;
+  height: auto;
+  max-height: 50vh;
+  min-height: 300px;
+  overflow-y: auto;
+}
+
+.editor-content::-webkit-scrollbar {
+  width: 14px;
+}
+
+.editor-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.editor-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border: 4px solid transparent;
+  background-clip: padding-box;
+  border-radius: 8px;
+}
+
+.editor-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+  border: 4px solid transparent;
+  background-clip: padding-box;
+}
+
+.editor-line {
+  display: flex;
+  padding: 6px 16px;
+  align-items: flex-start;
+}
+
+.line-num {
+  color: #858585;
+  width: 32px;
+  text-align: right;
+  padding-right: 16px;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.comment {
+  color: #6a9955;
+}
+
+.keyword {
+  color: #9cdcfe;
+  margin-right: 8px;
+  min-width: 90px;
+}
+
+.inline-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px dashed #555;
+  color: #ce9178;
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
+  width: 100%;
+  resize: none;
+  transition: border-color 0.2s;
+}
+
+.inline-input:focus {
+  border-bottom-color: #569cd6;
+}
+
+button:focus {
+  outline: none;
+}
+
+.prompt-text-editor {
+  position: relative;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #334155;
+  background: transparent;
+  border-radius: 0 0 12px 12px;
+  text-align: left;
+}
+
+.prompt-input {
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  color: #4f46e5;
+  font-weight: 500;
+  border-radius: 4px;
+  padding: 2px 6px;
+  outline: none;
+  transition: all 0.2s;
+  display: inline;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.prompt-input:focus {
+  background: rgba(99, 102, 241, 0.15);
+  border-color: #4f46e5;
+  color: #4338ca;
+}
+
+/* Все эффекты наведения/нажатия убраны */
+
+/* Loader */
+.loader {
+  display: none;
+  margin-top: 24px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(79, 70, 229, 0.1);
+  border-left-color: #ec4899;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px auto;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Result Slide Styles */
+.success-container {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 48px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.success-icon {
+  font-size: 64px;
+  background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 24px;
+  animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0);
+  }
+
+  80% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.open-site-btn {
+  display: inline-block;
+  margin-top: 32px;
+  padding: 18px 40px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  text-decoration: none;
+  border-radius: 100px;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+}
+
+.open-site-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(16, 185, 129, 0.4);
+}
+
+.ps-step-num {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+  color: #ffffff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.ps-step-content h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 2px;
+}
+
+.ps-step-content p {
+  font-size: 0.85rem;
+  color: #64748b;
+  line-height: 1.4;
+}
+</style>

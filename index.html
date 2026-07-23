@@ -1829,26 +1829,28 @@
       color: #eab308;
     }
 
-    /* Окно редактора промпта (Стиль VS Code) */
+    /* Окно редактора промпта (Стиль светлого стекла) */
     .mac-window {
       width: 100%;
       max-width: 900px;
       margin: 0 auto 32px auto;
-      background: #1e1e1e;
-      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-      border: 1px solid #333;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.8);
       display: flex;
       flex-direction: column;
     }
 
     .mac-header {
-      background: #252526;
+      background: rgba(255, 255, 255, 0.5);
       padding: 10px 16px;
       display: flex;
       align-items: center;
-      border-bottom: 1px solid #1e1e1e;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
       position: relative;
     }
 
@@ -1880,17 +1882,20 @@
       left: 50%;
       transform: translateX(-50%);
       font-size: 13px;
-      color: #969696;
+      color: #475569;
+      font-weight: 500;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
 
     .editor-content {
-      padding: 24px 0;
-      color: #d4d4d4;
+      padding: 20px 24px;
+      color: #334155;
       font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
       font-size: 15px;
       line-height: 1.6;
-      height: 380px;
+      height: auto;
+      max-height: 50vh;
+      min-height: 300px;
       overflow-y: auto;
     }
 
@@ -1899,17 +1904,20 @@
     }
 
     .editor-content::-webkit-scrollbar-track {
-      background: #1e1e1e;
+      background: transparent;
     }
 
     .editor-content::-webkit-scrollbar-thumb {
-      background: #424242;
-      border: 4px solid #1e1e1e;
+      background: rgba(0, 0, 0, 0.15);
+      border: 4px solid transparent;
+      background-clip: padding-box;
       border-radius: 8px;
     }
 
     .editor-content::-webkit-scrollbar-thumb:hover {
-      background: #4f4f4f;
+      background: rgba(0, 0, 0, 0.25);
+      border: 4px solid transparent;
+      background-clip: padding-box;
     }
 
     .editor-line {
@@ -1959,32 +1967,31 @@
     }
     .prompt-text-editor {
       position: relative;
-      padding: 32px 24px;
       font-family: 'Consolas', 'Monaco', monospace;
       font-size: 1.05rem;
       line-height: 1.6;
-      color: #e2e8f0;
-      background: #1e293b;
+      color: #334155;
+      background: transparent;
       border-radius: 0 0 12px 12px;
       text-align: left;
-      min-height: 400px;
     }
     .prompt-input {
-      background: rgba(86, 156, 214, 0.1);
-      border: 1px solid rgba(86, 156, 214, 0.3);
-      color: #9cdcfe;
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #4f46e5;
+      font-weight: 500;
       border-radius: 4px;
       padding: 2px 6px;
       outline: none;
       transition: all 0.2s;
-      display: inline-block;
-      min-height: 1.6em;
-      min-width: 40px;
+      display: inline;
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
     }
     .prompt-input:focus {
-      background: rgba(86, 156, 214, 0.2);
-      border-color: #569cd6;
-      color: #9cdcfe;
+      background: rgba(99, 102, 241, 0.15);
+      border-color: #4f46e5;
+      color: #4338ca;
     }
 
     /* Все эффекты наведения/нажатия убраны */
@@ -2379,6 +2386,7 @@
         padding: 40px 32px;
         height: auto;
         min-height: 600px;
+        position: relative;
       }
 
       .intro-grid,
@@ -2913,17 +2921,17 @@
         </div>
         <div class="editor-content prompt-text-editor">
           <div class="prompt-body">
-<span style="color: #569cd6;">1. РОЛЬ:</span> Действуй как профессиональный Fullstack-разработчик и веб-дизайнер.<br><br>
-<span style="color: #569cd6;">2. ЗАДАЧА:</span> Напиши полностью готовый, валидный и красивый код для одного файла index.html. Это должен быть современный, интерактивный лендинг.<br><br>
-<span style="color: #569cd6;">3. КОНТЕКСТ И ДАННЫЕ:</span><br>
+<span style="color: #6366f1; font-weight: 600;">1. РОЛЬ:</span> Действуй как профессиональный Fullstack-разработчик и веб-дизайнер.<br><br>
+<span style="color: #6366f1; font-weight: 600;">2. ЗАДАЧА:</span> Напиши полностью готовый, валидный и красивый код для одного файла index.html. Это должен быть современный, интерактивный лендинг.<br><br>
+<span style="color: #6366f1; font-weight: 600;">3. КОНТЕКСТ И ДАННЫЕ:</span><br>
 - Название проекта: <span contenteditable="true" id="inp-name" class="prompt-input">[ ]</span><br>
 - Тематика сайта: <span contenteditable="true" id="inp-theme" class="prompt-input">[ ]</span><br>
 - Целевая аудитория: <span contenteditable="true" id="inp-aud" class="prompt-input">[ ]</span><br>
 - Главный призыв к действию (CTA): На главном экране должна быть кнопка <span contenteditable="true" id="inp-cta" class="prompt-input">[ ]</span>, которая плавно прокручивает страницу вниз к секции <span contenteditable="true" id="inp-struct-cta" class="prompt-input">[ ]</span>.<br>
 - Структура секций (Контент): Добавь секции: <span contenteditable="true" id="inp-struct" class="prompt-input">[ ]</span>.<br>
 - Данные для подвала (Footer): Вставь контакты: <span contenteditable="true" id="inp-footer" class="prompt-input">[ ]</span>.<br><br>
-<span style="color: #569cd6;">4. ФОРМАТ ОТВЕТА:</span> Выдай ОДИН единый блок кода HTML. Внутри него должны быть стили и минимальный JavaScript для плавной прокрутки. Все картинки должны быть качественными фотографиями из Unsplash. Дизайн должен работать сразу после открытия файла в браузере.<br><br>
-<span style="color: #569cd6;">5. ВИЗУАЛ И ОГРАНИЧЕНИЯ:</span><br>
+<span style="color: #6366f1; font-weight: 600;">4. ФОРМАТ ОТВЕТА:</span> Выдай ОДИН единый блок кода HTML. Внутри него должны быть стили и минимальный JavaScript для плавной прокрутки. Все картинки должны быть качественными фотографиями из Unsplash. Дизайн должен работать сразу после открытия файла в браузере.<br><br>
+<span style="color: #6366f1; font-weight: 600;">5. ВИЗУАЛ И ОГРАНИЧЕНИЯ:</span><br>
 - Настроение и стиль: <span contenteditable="true" id="inp-style" class="prompt-input">[ ]</span>.<br>
 - Цветовая гамма: <span contenteditable="true" id="inp-colors" class="prompt-input">[ ]</span>.<br>
 - Шрифты: <span contenteditable="true" id="inp-fonts" class="prompt-input">[ ]</span>.<br>
@@ -3092,7 +3100,7 @@
 
     document.addEventListener('keydown', (e) => {
       // Игнорируем нажатия внутри текстовых полей, чтобы можно было печатать
-      if (e.target.tagName.toLowerCase() === 'textarea' || e.target.tagName.toLowerCase() === 'input') {
+      if (e.target.tagName.toLowerCase() === 'textarea' || e.target.tagName.toLowerCase() === 'input' || e.target.isContentEditable) {
         return;
       }
 

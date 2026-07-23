@@ -1,0 +1,167 @@
+---
+// Slide11
+---
+<section class="slide-container slide-full-img">
+      <span class="slide-number"></span>
+      <img class="pillar-full-img" src="html+css.png" alt="HTML + CSS">
+    </section>
+
+<style is:global>
+/* Slide 11 — Q&A */
+.qa-slide {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.qa-slide h2 {
+  justify-content: center;
+  font-size: 2.5rem;
+}
+
+.qa-icon {
+  width: 80px;
+  height: 80px;
+  background: #eff6ff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.qa-icon i {
+  font-size: 36px;
+  color: #2563eb;
+}
+
+.qa-text {
+  font-size: 1.15rem;
+  color: #64748b;
+  max-width: 500px;
+  margin-bottom: 32px;
+}
+
+.prompt-textarea {
+  width: 100%;
+  height: 350px;
+  background: #1e293b;
+  color: #f8fafc;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #334155;
+  font-family: monospace;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  resize: vertical;
+  margin-bottom: 24px;
+  transition: all 0.2s;
+}
+
+.prompt-textarea:focus {
+  outline: none;
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+}
+
+
+.loader {
+  display: none;
+  text-align: center;
+  margin-top: 20px;
+  font-weight: 600;
+  color: #2563eb;
+}
+
+/* Result slide */
+.result-slide-content {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  align-items: stretch;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+}
+
+.result-preview {
+  flex: 1;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #f8fafc;
+}
+
+.result-preview iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.result-sidebar {
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  padding: 32px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.qr-container {
+  background: white;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.qr-hint {
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+}
+
+.qr-subhint {
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.link-btn {
+  background: transparent;
+  border: 2px solid #2563eb;
+  color: #2563eb;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 16px;
+  transition: all 0.2s;
+}
+
+.link-btn:hover {
+  background: #eff6ff;
+}
+
+.qa-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  max-width: 600px;
+}
+
+.qa-topic {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  color: #475569;
+}
+</style>

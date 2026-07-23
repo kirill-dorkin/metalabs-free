@@ -1,0 +1,444 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Slide1 from '../components/slides/Slide1.astro';
+import Slide2 from '../components/slides/Slide2.astro';
+import Slide3 from '../components/slides/Slide3.astro';
+import Slide4 from '../components/slides/Slide4.astro';
+import Slide5 from '../components/slides/Slide5.astro';
+import Slide6 from '../components/slides/Slide6.astro';
+import Slide7 from '../components/slides/Slide7.astro';
+import Slide8 from '../components/slides/Slide8.astro';
+import Slide9 from '../components/slides/Slide9.astro';
+import Slide10 from '../components/slides/Slide10.astro';
+import Slide11 from '../components/slides/Slide11.astro';
+import Slide12 from '../components/slides/Slide12.astro';
+import Slide13 from '../components/slides/Slide13.astro';
+import Slide14 from '../components/slides/Slide14.astro';
+import Slide15 from '../components/slides/Slide15.astro';
+import Slide16 from '../components/slides/Slide16.astro';
+import Slide17 from '../components/slides/Slide17.astro';
+import Slide18 from '../components/slides/Slide18.astro';
+import Slide19 from '../components/slides/Slide19.astro';
+import Slide20 from '../components/slides/Slide20.astro';
+import Slide21 from '../components/slides/Slide21.astro';
+import Slide22 from '../components/slides/Slide22.astro';
+import Slide23 from '../components/slides/Slide23.astro';
+import Slide24 from '../components/slides/Slide24.astro';
+
+---
+
+<Layout title="Создаем ваш первый сайт за один урок">
+  <div class="presentation">
+      <Slide1 />
+      <Slide2 />
+      <Slide3 />
+      <Slide4 />
+      <Slide5 />
+      <Slide6 />
+      <Slide7 />
+      <Slide8 />
+      <Slide9 />
+      <Slide10 />
+      <Slide11 />
+      <Slide12 />
+      <Slide13 />
+      <Slide14 />
+      <Slide15 />
+      <Slide16 />
+      <Slide17 />
+      <Slide18 />
+      <Slide19 />
+      <Slide20 />
+      <Slide21 />
+      <Slide22 />
+      <Slide23 />
+      <Slide24 />
+
+  </div>
+  
+  <div class="controls-container">
+
+    <button class="nav-btn" id="prevBtn" disabled>
+      <i class="fa-solid fa-arrow-left"></i> Назад
+    </button>
+
+    <div class="progress-bar-wrapper">
+      <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+
+    <button class="nav-btn" id="nextBtn">
+      Вперед <i class="fa-solid fa-arrow-right"></i>
+    </button>
+  </div>
+
+  
+
+  <script is:inline>
+const slides = document.querySelectorAll('.slide-container');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const progressBar = document.getElementById('progressBar');
+
+    let currentSlideIndex = 0;
+    const totalSlides = slides.length;
+    let isSiteGenerated = false; // Блокировка 15-го слайда
+
+    function updateSlider() {
+      slides.forEach((slide, index) => {
+        // Auto-update slide numbers dynamically
+        const slideNumElement = slide.querySelector('.slide-number');
+        if (slideNumElement) {
+          const numStr = String(index + 1).padStart(2, '0');
+          slideNumElement.textContent = `${numStr} / ${totalSlides}`;
+        }
+
+        if (index === currentSlideIndex) {
+          slide.classList.add('active');
+          slide.scrollTop = 0;
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+
+      prevBtn.disabled = currentSlideIndex === 0;
+      nextBtn.disabled = currentSlideIndex === totalSlides - 1;
+
+      const progressPercent = ((currentSlideIndex + 1) / totalSlides) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+    }
+
+    function checkSlideLock() {
+      if (currentSlideIndex === 19 && !isSiteGenerated) {
+        alert('Сначала создайте магию (сгенерируйте сайт), чтобы перейти дальше!');
+        return false;
+      }
+      return true;
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (currentSlideIndex > 0) {
+        currentSlideIndex--;
+        updateSlider();
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (checkSlideLock() && currentSlideIndex < totalSlides - 1) {
+        currentSlideIndex++;
+        updateSlider();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      // Игнорируем нажатия внутри текстовых полей, чтобы можно было печатать
+      if (e.target.tagName.toLowerCase() === 'textarea' || e.target.tagName.toLowerCase() === 'input' || e.target.isContentEditable) {
+        return;
+      }
+
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        if (checkSlideLock() && currentSlideIndex < totalSlides - 1) {
+          e.preventDefault();
+          currentSlideIndex++;
+          updateSlider();
+        }
+      } else if (e.key === 'ArrowLeft') {
+        if (currentSlideIndex > 0) {
+          e.preventDefault();
+          currentSlideIndex--;
+          updateSlider();
+        }
+      }
+    });
+
+    // Логика отправки промпта
+    const generateBtn = document.getElementById('generateBtn');
+    const loader = document.getElementById('loader');
+    const siteLink = document.getElementById('siteLink');
+
+    const inputsIds = ['inp-name', 'inp-theme', 'inp-aud', 'inp-cta', 'inp-struct-cta', 'inp-struct', 'inp-footer', 'inp-style', 'inp-colors', 'inp-fonts', 'inp-effects'];
+
+    const defaultValues = {
+      'inp-name': '[Салон красоты "Gloss"]',
+      'inp-theme': '[Стильные стрижки, укладки и премиальный маникюр]',
+      'inp-aud': '[Современные девушки, ценящие комфорт, высокое качество и свое время]',
+      'inp-cta': '["Записаться онлайн"]',
+      'inp-struct-cta': '["Контакты"]',
+      'inp-struct': '["О нас", "Наши услуги с ценами", "Преимущества", "Галерея работ" и "Контакты"]',
+      'inp-footer': '[г. Москва, ул. Красивая 1; Телефон: +7 (999) 000-00-00; Соцсети: @gloss_beauty]',
+      'inp-style': '[дорогой, минималистичный, элегантный]',
+      'inp-colors': '[золотой акцентный, глубокий черный фон и пудровые детали]',
+      'inp-fonts': '[Классический с засечками для заголовков (Playfair Display) и строгий без засечек для текста (Montserrat)]',
+      'inp-effects': '[Добавь плавные анимации появления элементов при скролле]'
+    };
+
+    // Логика колеса фортуны
+    const wheelCanvas = document.getElementById('wheelCanvas');
+    const wheelIdeas = document.getElementById('wheelIdeas');
+    const spinBtn = document.getElementById('spinBtn');
+    const wheelResult = document.getElementById('wheelResult');
+    const ctx = wheelCanvas ? wheelCanvas.getContext('2d') : null;
+
+    let currentRotation = 0;
+    let isSpinning = false;
+
+    const getIdeas = () => wheelIdeas ? wheelIdeas.value.split('\n').map(i => i.trim()).filter(i => i) : [];
+
+    function drawWheel() {
+      if (!ctx) return;
+      const ideas = getIdeas();
+      const numSlices = ideas.length || 1;
+      const sliceAngle = (2 * Math.PI) / numSlices;
+      const colors = ideas.length > 0 
+        ? ['#ef4444', '#f97316', '#f59e0b', '#84cc16', '#10b981', '#06b6d4', '#3b82f6', '#6366f1', '#a855f7', '#ec4899'] 
+        : ['#cbd5e1']; // Серый цвет, если пусто
+
+      ctx.clearRect(0, 0, 400, 400);
+      ctx.save();
+      ctx.translate(200, 200);
+      ctx.rotate(currentRotation);
+
+      for (let i = 0; i < numSlices; i++) {
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, 190, i * sliceAngle, (i + 1) * sliceAngle);
+        ctx.lineTo(0, 0);
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#ffffff';
+        ctx.stroke();
+
+        // Рисуем текст
+        ctx.save();
+        const angle = numSlices === 1 ? -Math.PI / 2 : i * sliceAngle + sliceAngle / 2;
+        ctx.rotate(angle);
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = ideas.length > 0 ? '#ffffff' : '#64748b';
+        ctx.font = 'bold 20px "Inter", sans-serif';
+        
+        const text = ideas.length > 0 ? ideas[i] : 'Добавьте идеи...';
+        const shortText = text.length > 15 ? text.substring(0, 14) + '...' : text;
+        
+        if (numSlices === 1) {
+          ctx.textAlign = 'center';
+          ctx.fillText(shortText, 0, -100);
+        } else {
+          ctx.textAlign = 'right';
+          ctx.fillText(shortText, 170, 0);
+        }
+        ctx.restore();
+      }
+
+      // Центр колеса
+      ctx.beginPath();
+      ctx.arc(0, 0, 24, 0, 2 * Math.PI);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = '#f8fafc';
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    if (wheelIdeas) {
+      wheelIdeas.addEventListener('input', drawWheel);
+      drawWheel();
+    }
+
+    if (spinBtn) {
+      spinBtn.addEventListener('click', () => {
+        const ideas = getIdeas();
+        if (ideas.length === 0 || isSpinning) return;
+        isSpinning = true;
+        wheelResult.textContent = 'Крутим...';
+        wheelResult.style.opacity = '1';
+        
+        const spins = 5 + Math.random() * 5;
+        const extraDegrees = Math.random() * 2 * Math.PI;
+        const targetRotation = currentRotation + spins * 2 * Math.PI + extraDegrees;
+        const duration = 4000;
+        const startTime = performance.now();
+        const startRotation = currentRotation;
+
+        function animate(time) {
+          const elapsed = time - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          
+          const easeProgress = 1 - Math.pow(1 - progress, 4);
+          
+          currentRotation = startRotation + (targetRotation - startRotation) * easeProgress;
+          drawWheel();
+
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            isSpinning = false;
+            const normalizedRotation = currentRotation % (2 * Math.PI);
+            const sliceAngle = (2 * Math.PI) / ideas.length;
+            const topAngle = (3 * Math.PI / 2 - normalizedRotation + 4 * Math.PI) % (2 * Math.PI);
+            const winningIndex = Math.floor(topAngle / sliceAngle);
+            const winner = ideas[winningIndex];
+            
+            wheelResult.textContent = `Выпало: ${winner}!`;
+            wheelResult.style.opacity = '1';
+            
+            defaultValues['inp-theme'] = `[${winner}]`;
+            defaultValues['inp-name'] = `[Проект "${winner}"]`;
+            
+            if (typeof confetti !== 'undefined') {
+              confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+              });
+            }
+          }
+        }
+        requestAnimationFrame(animate);
+      });
+    }
+
+    // Autofill button logic
+    const autofillBtn = document.getElementById('autofillBtn');
+    if (autofillBtn) {
+      autofillBtn.addEventListener('click', () => {
+        inputsIds.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.innerText = defaultValues[id];
+        });
+        localStorage.setItem('lessonSavedData', JSON.stringify(defaultValues));
+      });
+    }
+
+    // Восстанавливаем промпт из localStorage, если он там есть
+    const savedData = JSON.parse(localStorage.getItem('lessonSavedData') || '{}');
+    inputsIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (savedData[id]) el.innerText = savedData[id];
+      // Сохраняем каждое изменение текста в localStorage
+      el.addEventListener('input', () => {
+        savedData[id] = el.innerText;
+        localStorage.setItem('lessonSavedData', JSON.stringify(savedData));
+      });
+    });
+
+    generateBtn.addEventListener('click', async () => {
+      // Собираем текст из полей
+      const projectName = document.getElementById('inp-name').innerText.trim();
+      const theme = document.getElementById('inp-theme').innerText.trim();
+      const targetAudience = document.getElementById('inp-aud').innerText.trim();
+      const ctaBtn = document.getElementById('inp-cta').innerText.trim();
+      const ctaTarget = document.getElementById('inp-struct-cta').innerText.trim();
+      const struct = document.getElementById('inp-struct').innerText.trim();
+      const footer = document.getElementById('inp-footer').innerText.trim();
+      const designStyle = document.getElementById('inp-style').innerText.trim();
+      const themeColors = document.getElementById('inp-colors').innerText.trim();
+      const fonts = document.getElementById('inp-fonts').innerText.trim();
+      const effects = document.getElementById('inp-effects').innerText.trim();
+
+      if (!projectName || projectName === '[ ]' || projectName === '[]') {
+        alert('Пожалуйста, заполните переменные в промпте (или нажмите "Заполнить автоматически")!');
+        return;
+      }
+
+      const userPrompt = `
+1. РОЛЬ: Действуй как профессиональный Fullstack-разработчик и веб-дизайнер.
+
+2. ЗАДАЧА: Напиши полностью готовый, валидный и красивый код для одного файла index.html. Это должен быть современный, интерактивный лендинг.
+
+3. КОНТЕКСТ И ДАННЫЕ:
+- Название проекта: ${projectName}
+- Тематика сайта: ${theme}
+- Целевая аудитория: ${targetAudience}
+- Главный призыв к действию (CTA): На главном экране должна быть кнопка ${ctaBtn}, которая плавно прокручивает страницу вниз к секции ${ctaTarget}.
+- Структура секций (Контент): Добавь секции: ${struct}.
+- Данные для подвала (Footer): Вставь контакты: ${footer}.
+
+4. ФОРМАТ ОТВЕТА: Выдай ОДИН единый блок кода HTML. Внутри него должны быть стили и минимальный JavaScript для плавной прокрутки. Все картинки должны быть качественными фотографиями из Unsplash. Дизайн должен работать сразу после открытия файла в браузере.
+
+5. ВИЗУАЛ И ОГРАНИЧЕНИЯ:
+- Настроение и стиль: ${designStyle}.
+- Цветовая гамма: ${themeColors}.
+- Шрифты: ${fonts}.
+- Эффекты: ${effects}.
+Код должен быть чистым, адаптивным (для мобильных телефонов) и без ошибок.
+      `.trim();
+
+      // Скрытый системный промпт для гарантированно крутого результата
+      const promptText = `
+Сгенерируй профессиональный, невероятно красивый и современный HTML/CSS/JS сайт в один файл (всё внутри).
+Сайт ОБЯЗАН быть адаптивным (mobile-friendly) и использовать современные подходы: Flexbox, CSS Grid.
+Используй красивые тени, мягкие закругления (border-radius: 16px+), градиенты, эффекты наведения (hover) и плавные переходы (transitions). Дизайн должен выглядеть на миллион долларов (Premium Quality).
+
+ВОТ ТОЧНЫЕ УКАЗАНИЯ ОТ КЛИЕНТА (СОБЛЮДАЙ ИХ СТРОГО):
+
+${userPrompt}
+
+ОБЯЗАТЕЛЬНО:
+- Включи FontAwesome для иконок и Google Fonts (например, Inter или Montserrat).
+- Не используй lorem ipsum, придумай осмысленный продающий текст на основе контекста!
+- Сделай красивую шапку и подвал.
+- ВАЖНО ПРО КАРТИНКИ: Если используешь тег <img>, используй ТОЛЬКО реально работающие ссылки из интернета (например, https://picsum.photos/800/600 или https://placehold.co/600x400). Никогда не пиши локальные пути (типа img/photo.jpg), иначе картинки будут сломаны! Лучше вообще используй крутые CSS-градиенты и иконки вместо фото.
+      `.trim();
+
+      generateBtn.disabled = true;
+      loader.style.display = 'block';
+
+      try {
+        const response = await fetch('/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt: promptText })
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+
+        // Получаем IP-адрес хоста или домен, чтобы QR-код был доступен в локальной сети
+        let baseUrl = window.location.origin;
+        // Если открыт как localhost, но нужно дать доступ с телефона, лучше показать IP
+        if (baseUrl.includes('localhost') && data.localIp) {
+          baseUrl = `http://${data.localIp}:${window.location.port}`;
+        }
+
+        // Если сервер вернул абсолютный URL (Vercel Blob), используем его, иначе клеим с baseUrl
+        const fullUrl = data.url.startsWith('http') ? data.url : baseUrl + data.url;
+
+        siteLink.href = fullUrl;
+
+        document.getElementById('qrcode').innerHTML = '';
+        new QRCode(document.getElementById('qrcode'), {
+          text: fullUrl,
+          width: 200,
+          height: 200,
+          colorDark: "#1e293b",
+          colorLight: "#ffffff",
+          correctLevel: QRCode.CorrectLevel.H
+        });
+
+        // Снимаем блокировку
+        isSiteGenerated = true;
+
+        // Переходим на следующий слайд (результат)
+        if (currentSlideIndex < totalSlides - 1) {
+          currentSlideIndex++;
+          updateSlider();
+        }
+
+      } catch (error) {
+        alert('Нейросеть сейчас слегка перегружена (много запросов). Подождите 5 секунд и попробуйте снова!');
+        console.error(error);
+      } finally {
+        generateBtn.disabled = false;
+        loader.style.display = 'none';
+      }
+    });
+
+    // Инициализируем слайдер при загрузке страницы, чтобы обновить номера
+    updateSlider();
+</script>
+</Layout>

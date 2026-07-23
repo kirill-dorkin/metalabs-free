@@ -1,0 +1,252 @@
+---
+// Slide4
+---
+<section class="slide-container">
+      <span class="slide-number">04 / 16</span>
+      <h2><i class="fa-solid fa-hourglass-half"></i> Честно об ожиданиях</h2>
+      <div class="expect-grid">
+        <div class="expect-top">
+          <p class="expect-text">Каким бы хорошим учителем ни был и какими бы умными ни были вы — <strong>за один час
+              невозможно сделать из вас программиста</strong>.</p>
+          <p class="expect-text">Невозможно сжать в час то, что в вузах изучают 4–5 лет.</p>
+          <div class="expect-warning">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>На нашем курсе 5-летняя программа сжимается до 8 месяцев — и оставляем только то, что реально нужно в
+              работе.</span>
+          </div>
+        </div>
+        <div class="expect-bottom">
+          <div class="expect-card">
+            <div class="exp-icon blue"><i class="fa-solid fa-face-smile"></i></div>
+            <div class="exp-content">
+              <h3>Это нормально — если что-то не получается с первого раза</h3>
+              <p>Многие из вас впервые пробуют программировать. Запутаться, ошибиться, не понять — это часть процесса
+              </p>
+            </div>
+          </div>
+          <div class="expect-card">
+            <div class="exp-icon green"><i class="fa-solid fa-hands-helping"></i></div>
+            <div class="exp-content">
+              <h3>Поддержка на каждом шаге</h3>
+              <p>На всех занятиях есть саппорты — они помогут, подскажут и поддержат, если что-то не получается</p>
+            </div>
+          </div>
+          <div class="expect-card">
+            <div class="exp-icon gold"><i class="fa-solid fa-chart-line"></i></div>
+            <div class="exp-content">
+              <h3>Результат будет</h3>
+              <p>Не сегодня, не завтра, но каждый шаг приближает вас к цели. Главное — не останавливаться</p>
+            </div>
+          </div>
+          <div class="expect-card">
+            <div class="exp-icon purple"><i class="fa-solid fa-shield-halved"></i></div>
+            <div class="exp-content">
+              <h3>Без давления</h3>
+              <p>Здесь нет оценок и экзаменов. Учитесь в своём темпе, задавайте вопросы, не бойтесь ошибаться</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<style is:global>
+/* Slide 4 — Expectations */
+.expect-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  flex: 1;
+}
+
+.expect-top {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.expect-top .expect-text {
+  font-size: 1.15rem;
+  color: #475569;
+  line-height: 1.7;
+}
+
+.expect-top .expect-text strong {
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.expect-warning {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 14px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  color: #1e40af;
+  margin-top: 4px;
+}
+
+.expect-warning i {
+  font-size: 22px;
+  color: #2563eb;
+  margin-top: 2px;
+}
+
+.expect-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  flex: 1;
+}
+
+.expect-card {
+  background: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+}
+
+.expect-card:hover {
+  box-shadow: 0 12px 30px rgba(79, 70, 229, 0.08);
+  transform: translateY(-2px);
+}
+
+.expect-card .exp-icon {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.expect-card .exp-icon.blue {
+  background: #eff6ff;
+}
+
+.expect-card .exp-icon.blue i {
+  color: #2563eb;
+  font-size: 20px;
+}
+
+.expect-card .exp-icon.green {
+  background: #f0fdf4;
+}
+
+.expect-card .exp-icon.green i {
+  color: #16a34a;
+  font-size: 20px;
+}
+
+.expect-card .exp-icon.gold {
+  background: #fefce8;
+}
+
+.expect-card .exp-icon.gold i {
+  color: #d97706;
+  font-size: 20px;
+}
+
+.expect-card .exp-icon.purple {
+  background: #faf5ff;
+}
+
+.expect-card .exp-icon.purple i {
+  color: #9333ea;
+  font-size: 20px;
+}
+
+.expect-card .exp-content h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.expect-card .exp-content p {
+  font-size: 0.9rem;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+/* Slide 4 — Intro */
+.fullstack-content {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 48px;
+  flex: 1;
+  align-items: center;
+}
+
+.fullstack-visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.stack-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.stack-layer {
+  padding: 20px 24px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.stack-layer.top {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 2px solid #bfdbfe;
+}
+
+.stack-layer.middle {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 2px solid #bbf7d0;
+}
+
+.stack-layer.bottom {
+  background: #f1f5f9;
+  color: #475569;
+  border: 2px solid #cbd5e1;
+}
+
+.stack-bridge {
+  text-align: center;
+  color: #2563eb;
+  font-size: 1.5rem;
+}
+
+.fullstack-text p {
+  font-size: 1.05rem;
+  color: #475569;
+  margin-bottom: 20px;
+}
+
+.fullstack-text .highlight {
+  background: #eff6ff;
+  border-left: 4px solid #2563eb;
+  padding: 16px 20px;
+  border-radius: 0 8px 8px 0;
+  color: #1e293b;
+  font-weight: 500;
+}
+</style>

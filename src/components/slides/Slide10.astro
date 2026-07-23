@@ -1,0 +1,112 @@
+---
+// Slide10
+---
+<section class="slide-container">
+      <span class="slide-number">08 / 16</span>
+      <h2><i class="fa-solid fa-paint-roller"></i> HTML + CSS — дом с отделкой</h2>
+      <p class="house-text" style="margin-bottom: 24px;">Добавляем <strong>CSS</strong> — и дом из стройки превращается
+        в уютное жильё.</p>
+      <div class="house-slide">
+        <div class="house-left">
+          <div class="house-badge green">
+            <i class="fa-solid fa-palette"></i> HTML + CSS
+          </div>
+          <p class="house-text">CSS — это <strong>отделка</strong>: покраска стен, обои, напольное покрытие,
+            светильники. Дом становится красивым и комфортным.</p>
+        </div>
+        <div class="house-right">
+          <div class="house-element">
+            <div class="he-icon blue"><i class="fa-solid fa-swatchbook"></i></div>
+            <div class="he-content">
+              <h3>Цвета и материалы</h3>
+              <p>Фон, цвета текста, границы — CSS задаёт палитру всего дома, как краска и обои</p>
+            </div>
+          </div>
+          <div class="house-element">
+            <div class="he-icon green"><i class="fa-solid fa-text-height"></i></div>
+            <div class="he-content">
+              <h3>Шрифты и размеры</h3>
+              <p>Размер заголовков, межстрочные интервалы — как выбор светильников и декора</p>
+            </div>
+          </div>
+          <div class="house-element">
+            <div class="he-icon gold"><i class="fa-solid fa-arrows-split-up-and-left"></i></div>
+            <div class="he-content">
+              <h3>Расположение элементов</h3>
+              <p>Отступы, сетка, flexbox — как расстановка мебели в уже готовых комнатах</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<style is:global>
+/* Slide 10 — Perspectives */
+.perspectives-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  flex: 1;
+  align-content: center;
+}
+
+.perspective-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 32px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.perspective-card .p-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.perspective-card:nth-child(1) .p-icon {
+  background: #eff6ff;
+}
+
+.perspective-card:nth-child(1) .p-icon i {
+  color: #2563eb;
+}
+
+.perspective-card:nth-child(2) .p-icon {
+  background: #f0fdf4;
+}
+
+.perspective-card:nth-child(2) .p-icon i {
+  color: #16a34a;
+}
+
+.perspective-card:nth-child(3) .p-icon {
+  background: #fef3c7;
+}
+
+.perspective-card:nth-child(3) .p-icon i {
+  color: #d97706;
+}
+
+.perspective-card .p-icon i {
+  font-size: 24px;
+}
+
+.perspective-card h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.perspective-card p {
+  font-size: 0.9rem;
+  color: #64748b;
+}
+</style>

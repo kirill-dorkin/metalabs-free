@@ -1,0 +1,288 @@
+---
+// Slide2
+---
+<section class="slide-container">
+      <span class="slide-number">02 / 16</span>
+      <h2><i class="fa-solid fa-user-tie"></i> Обо мне</h2>
+      <div class="about-grid">
+        <div class="about-header">
+          <img class="about-logo" src="logo.jpeg" alt="MicroStudio logo">
+          <div class="about-header-content">
+            <h3>Основатель digital-агентства <strong>MicroStudio</strong></h3>
+            <p class="tagline">Создаю цифровые продукты, которые приносят результат</p>
+          </div>
+        </div>
+
+        <ul class="about-list">
+          <li>
+            <span class="about-icon"><i class="fa-solid fa-globe"></i></span>
+            <span>Создание сайтов и приложений</span>
+          </li>
+          <li>
+            <span class="about-icon"><i class="fa-solid fa-gears"></i></span>
+            <span>Скрипты оптимизации бизнес-процессов и логики</span>
+          </li>
+          <li>
+            <span class="about-icon green"><i class="fa-solid fa-brain"></i></span>
+            <span>Интеграция ИИ в бизнес</span>
+          </li>
+          <li>
+            <span class="about-icon gold"><i class="fa-solid fa-money-bill-trend-up"></i></span>
+            <span>В общем — всё, что приносит деньги сейчас 💰</span>
+          </li>
+        </ul>
+
+        <div class="about-experience">
+          <img class="melbet-logo" src="melbet.png" alt="MelBet logo">
+          <div class="experience-text">
+            <h4>Прежде чем основать MicroStudio</h4>
+            <p>Я работал разработчиком в компании MelBet — получил опыт в крупной IT-компании и понял, что хочу своё
+              дело</p>
+            <span class="role-badge"><i class="fa-solid fa-code"></i> Разработчик</span>
+          </div>
+        </div>
+
+        <div class="about-links">
+          <a href="https://www.instagram.com/microstudio_official/" target="_blank" class="about-link instagram">
+            <i class="fa-brands fa-instagram"></i> Инстаграм компании
+          </a>
+          <a href="https://microstudio-official.vercel.app" target="_blank" class="about-link website">
+            <i class="fa-solid fa-globe"></i> Сайт компании
+          </a>
+        </div>
+      </div>
+    </section>
+
+<style is:global>
+/* Slide 2 — About me */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  flex: 1;
+  align-items: center;
+}
+
+.about-header {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 28px;
+  align-items: center;
+}
+
+.about-logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 20px;
+  object-fit: cover;
+  border: 2px solid #e2e8f0;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+}
+
+.about-header-content h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.about-header-content .tagline {
+  font-size: 1rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.about-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 40px;
+}
+
+.about-list li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #1e293b;
+  line-height: 1.4;
+}
+
+.about-list li .about-icon {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  background: #eff6ff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-list li .about-icon i {
+  font-size: 16px;
+  color: #2563eb;
+}
+
+.about-list li .about-icon.green {
+  background: #f0fdf4;
+}
+
+.about-list li .about-icon.green i {
+  color: #16a34a;
+}
+
+.about-list li .about-icon.gold {
+  background: #fefce8;
+}
+
+.about-list li .about-icon.gold i {
+  color: #d97706;
+}
+
+.about-experience {
+  background: #fefce8;
+  border: 2px solid #fde68a;
+  border-radius: 14px;
+  padding: 20px 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.melbet-logo {
+  width: 80px;
+  height: 80px;
+  min-width: 80px;
+  border-radius: 12px;
+  object-fit: contain;
+  background: #ffffff;
+  padding: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.experience-text h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.experience-text p {
+  font-size: 0.9rem;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.experience-text .role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid #fde68a;
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 0.8rem;
+  color: #d97706;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.about-links {
+  display: flex;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.about-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.about-link:hover {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #2563eb;
+}
+
+.about-link i {
+  font-size: 20px;
+}
+
+.about-link.instagram i {
+  color: #e1306c;
+}
+
+.about-link.website i {
+  color: #2563eb;
+}
+
+/* Slide 2 — Intro */
+.intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  flex: 1;
+  align-items: center;
+}
+
+.question-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: box-shadow 0.2s;
+}
+
+.question-card:hover {
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+}
+
+.question-card .q-icon {
+  width: 48px;
+  height: 48px;
+  background: #eff6ff;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.question-card .q-icon i {
+  font-size: 20px;
+  color: #2563eb;
+}
+
+.question-card h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.question-card p {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.intro-image {
+  width: 100%;
+  height: 340px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid #e2e8f0;
+}
+</style>

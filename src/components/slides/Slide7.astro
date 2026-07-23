@@ -1,0 +1,89 @@
+---
+// Slide7
+---
+<section class="slide-container">
+      <span class="slide-number">06 / 16</span>
+      <h2><i class="fa-solid fa-hammer"></i> Как устроен сайт — аналогия с домом</h2>
+      <p class="house-text" style="margin-bottom: 24px;">Представьте, что создание сайта — это <strong>строительство
+          дома</strong>. Каждый слой добавляет новый уровень.</p>
+      <div class="house-slide">
+        <div class="house-left">
+          <div class="house-badge blue">
+            <i class="fa-solid fa-file-lines"></i> Только HTML
+          </div>
+          <p class="house-text">Это <strong>скелет дома</strong> — фундамент, стены, перекрытия, перегородки. Дом уже
+            существует, в нём можно жить, но выглядит он как стройка.</p>
+        </div>
+        <div class="house-right">
+          <div class="house-element">
+            <div class="he-icon orange"><i class="fa-solid fa-cubes"></i></div>
+            <div class="he-content">
+              <h3>Фундамент</h3>
+              <p>HTML-теги — это фундамент. <code>&lt;h1&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;img&gt;</code> —
+                каждый тег несёт свою нагрузку</p>
+            </div>
+          </div>
+          <div class="house-element">
+            <div class="he-icon blue"><i class="fa-solid fa-border-all"></i></div>
+            <div class="he-content">
+              <h3>Стены и перегородки</h3>
+              <p>Структура страницы: шапка, контент, боковая панель, подвал — всё разбито на логические блоки</p>
+            </div>
+          </div>
+          <div class="house-element">
+            <div class="he-icon green"><i class="fa-solid fa-door-open"></i></div>
+            <div class="he-content">
+              <h3>Двери и окна</h3>
+              <p>Ссылки и кнопки — это двери и окна. Они ведут куда-то или открывают что-то</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<style is:global>
+/* Slide 7 — House CSS */
+.house-badge.css-badge {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e40af;
+}
+
+/* Slide 7 — Practice */
+.practice-slide {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: #ffffff;
+}
+
+.practice-slide h2 {
+  justify-content: center;
+  font-size: 2.5rem;
+}
+
+.practice-slide .practice-text {
+  font-size: 1.3rem;
+  color: #475569;
+  max-width: 600px;
+  margin-bottom: 40px;
+}
+
+.practice-icon {
+  width: 96px;
+  height: 96px;
+  background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+  animation: pulse 2s ease-in-out infinite;
+  box-shadow: 0 10px 32px rgba(79, 70, 229, 0.25);
+}
+
+.practice-icon i {
+  font-size: 42px;
+  color: #ffffff;
+}
+</style>

@@ -1,0 +1,48 @@
+---
+// Slide20
+---
+<section class="slide-container editable-prompt-slide">
+      <span class="slide-number">14 / 17</span>
+      <h2 style="justify-content: center;"><i class="fa-solid fa-pen-to-square"></i> Отредактируем промпт вместе</h2>
+
+      <p style="text-align: center; margin-bottom: 16px; color: #475569;">Кликните на текст в синих рамках, чтобы
+        изменить его под свою идею!</p>
+
+      <div class="mac-window">
+        <div class="mac-header">
+          <div class="mac-dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <div class="mac-title">ТЗ_для_ИИ.txt</div>
+        </div>
+        <div class="editor-content prompt-text-editor">
+          <div class="prompt-body">
+<span style="color: #6366f1; font-weight: 600;">1. РОЛЬ:</span> Действуй как профессиональный Fullstack-разработчик и веб-дизайнер.<br><br>
+<span style="color: #6366f1; font-weight: 600;">2. ЗАДАЧА:</span> Напиши полностью готовый, валидный и красивый код для одного файла index.html. Это должен быть современный, интерактивный лендинг.<br><br>
+<span style="color: #6366f1; font-weight: 600;">3. КОНТЕКСТ И ДАННЫЕ:</span><br>
+- Название проекта: <span contenteditable="true" id="inp-name" class="prompt-input">[ ]</span><br>
+- Тематика сайта: <span contenteditable="true" id="inp-theme" class="prompt-input">[ ]</span><br>
+- Целевая аудитория: <span contenteditable="true" id="inp-aud" class="prompt-input">[ ]</span><br>
+- Главный призыв к действию (CTA): На главном экране должна быть кнопка <span contenteditable="true" id="inp-cta" class="prompt-input">[ ]</span>, которая плавно прокручивает страницу вниз к секции <span contenteditable="true" id="inp-struct-cta" class="prompt-input">[ ]</span>.<br>
+- Структура секций (Контент): Добавь секции: <span contenteditable="true" id="inp-struct" class="prompt-input">[ ]</span>.<br>
+- Данные для подвала (Footer): Вставь контакты: <span contenteditable="true" id="inp-footer" class="prompt-input">[ ]</span>.<br><br>
+<span style="color: #6366f1; font-weight: 600;">4. ФОРМАТ ОТВЕТА:</span> Выдай ОДИН единый блок кода HTML. Внутри него должны быть стили и минимальный JavaScript для плавной прокрутки. Все картинки должны быть качественными фотографиями из Unsplash. Дизайн должен работать сразу после открытия файла в браузере.<br><br>
+<span style="color: #6366f1; font-weight: 600;">5. ВИЗУАЛ И ОГРАНИЧЕНИЯ:</span><br>
+- Настроение и стиль: <span contenteditable="true" id="inp-style" class="prompt-input">[ ]</span>.<br>
+- Цветовая гамма: <span contenteditable="true" id="inp-colors" class="prompt-input">[ ]</span>.<br>
+- Шрифты: <span contenteditable="true" id="inp-fonts" class="prompt-input">[ ]</span>.<br>
+- Эффекты: <span contenteditable="true" id="inp-effects" class="prompt-input">[ ]</span>.<br>
+Код должен быть чистым, адаптивным (для мобильных телефонов) и без ошибок.
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 16px; justify-content: center; margin-top: 24px; width: 100%;">
+        <button id="autofillBtn" class="nav-btn" style="width: auto; padding: 14px 28px; font-size: 1rem;"><i class="fa-solid fa-magic"></i> Заполнить автоматически</button>
+        <button id="generateBtn" class="nav-btn" style="width: auto; padding: 14px 28px; font-size: 1rem;">Создать магию <i class="fa-solid fa-bolt"></i></button>
+      </div>
+      <div id="loader" class="loader"><i class="fa-solid fa-spinner fa-spin"></i> ИИ пишет код... Обычно это занимает
+        около 15 секунд.</div>
+    </section>
