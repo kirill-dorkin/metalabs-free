@@ -393,7 +393,9 @@ ${userPrompt}
         });
 
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          const errorText = await response.text();
+          console.error('Backend returned an error:', errorText);
+          throw new Error('Backend Error: ' + errorText);
         }
 
         const data = await response.json();
