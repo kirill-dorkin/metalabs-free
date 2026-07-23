@@ -35,7 +35,7 @@ ${prompt}
     const aiResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${ (typeof process !== 'undefined' && process.env.GEMINI_API_KEY) ? process.env.GEMINI_API_KEY : import.meta.env.GEMINI_API_KEY }`,
+        "Authorization": `Bearer ${process.env.GEMINI_API_KEY}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
@@ -63,8 +63,8 @@ ${prompt}
     const fileId = Math.random().toString(36).substring(2, 10);
     const fileName = `site-${fileId}.html`;
 
-    const isVercel = (typeof process !== 'undefined' && process.env.VERCEL) ? process.env.VERCEL : import.meta.env.VERCEL;
-    const blobToken = (typeof process !== 'undefined' && process.env.BLOB_READ_WRITE_TOKEN) ? process.env.BLOB_READ_WRITE_TOKEN : import.meta.env.BLOB_READ_WRITE_TOKEN;
+    const isVercel = process.env.VERCEL;
+    const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
 
     if (isVercel || blobToken) {
       if (!blobToken) {
