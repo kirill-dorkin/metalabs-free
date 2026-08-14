@@ -1,0 +1,80 @@
+name: MetaLabs QA toolchain bootstrap
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - chatgpt/metalabs-v5-2-runtime-qa
+    paths:
+      - '.github/workflows/metalabs-qa-toolchain.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Bun 1.2.4
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.2.4
+
+      - name: Build exact MetaLabs dependency bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/metalabs-toolchain
+          mkdir -p /tmp/metalabs-toolchain/packages/{metalabs-grading,metalabs-learning,metalabs-portfolio}
+          cd /tmp/metalabs-toolchain
+          cat > package.json <<'JSON'
+          {
+            "name": "metalabs-course-platform",
+            "version": "1.0.0",
+            "private": true,
+            "type": "module",
+            "packageManager": "bun@1.2.4",
+            "engines": { "node": ">=22.12.0" },
+            "workspaces": [
+              "packages/metalabs-grading",
+              "packages/metalabs-learning",
+              "packages/metalabs-portfolio"
+            ],
+            "dependencies": {
+              "@metalabs/grading": "workspace:*",
+              "@metalabs/learning": "workspace:*",
+              "@metalabs/portfolio": "workspace:*",
+              "@vercel/blob": "2.8.0",
+              "monaco-editor": "0.52.2",
+              "typescript": "6.0.3"
+            },
+            "devDependencies": {
+              "astro": "7.2.1",
+              "vite": "8.0.13",
+              "@types/node": "22.20.1"
+            }
+          }
+          JSON
+          printf '%s\n' '{"name":"@metalabs/grading","version":"0.1.0","type":"module","main":"./index.js","exports":"./index.js"}' > packages/metalabs-grading/package.json
+          printf '%s\n' '{"name":"@metalabs/learning","version":"0.1.0","type":"module","main":"./index.js","exports":"./index.js"}' > packages/metalabs-learning/package.json
+          printf '%s\n' '{"name":"@metalabs/portfolio","version":"0.1.0","type":"module","main":"./index.js","exports":"./index.js"}' > packages/metalabs-portfolio/package.json
+          bun install
+          rm -rf node_modules/@metalabs
+          mkdir -p /tmp/metalabs-qa-artifact
+          cp "$HOME/.bun/bin/bun" /tmp/metalabs-qa-artifact/bun
+          tar -C /tmp/metalabs-toolchain -czf /tmp/metalabs-qa-artifact/node_modules-linux-x64.tar.gz node_modules
+          /tmp/metalabs-qa-artifact/bun --version > /tmp/metalabs-qa-artifact/VERSIONS.txt
+          node --version >> /tmp/metalabs-qa-artifact/VERSIONS.txt
+          ./node_modules/.bin/astro --version >> /tmp/metalabs-qa-artifact/VERSIONS.txt
+          ./node_modules/.bin/tsc --version >> /tmp/metalabs-qa-artifact/VERSIONS.txt
+
+      - name: Upload QA toolchain
+        uses: actions/upload-artifact@v4
+        with:
+          name: metalabs-qa-toolchain-linux-x64
+          path: /tmp/metalabs-qa-artifact/
+          if-no-files-found: error
+          retention-days: 1
