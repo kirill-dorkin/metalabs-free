@@ -1,0 +1,69 @@
+name: Metalabs v5.2 runtime verification
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - chatgpt/metalabs-v5-2-runtime-qa
+    paths:
+      - 'qa/metalabs-foundation-professional-v5.2-runtime-fixed.zip'
+      - '.github/workflows/metalabs-v5-2-runtime-qa.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun 1.2.4
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.2.4
+
+      - name: Unpack candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .candidate
+          mkdir .candidate
+          unzip -q qa/metalabs-foundation-professional-v5.2-runtime-fixed.zip -d .candidate
+          test -f .candidate/metalabs-foundation-professional-v5-ready/package.json
+
+      - name: Install dependencies
+        working-directory: .candidate/metalabs-foundation-professional-v5-ready
+        run: bun install --frozen-lockfile
+
+      - name: Typecheck
+        working-directory: .candidate/metalabs-foundation-professional-v5-ready
+        run: bun run typecheck
+
+      - name: Full QA including Astro runtime crawl
+        working-directory: .candidate/metalabs-foundation-professional-v5-ready
+        run: bun run check
+
+      - name: Production build and dist QA
+        working-directory: .candidate/metalabs-foundation-professional-v5-ready
+        run: bun run build
+
+      - name: Package verified source
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd .candidate
+          zip -qr ../metalabs-foundation-professional-v5.2-CI-VERIFIED.zip metalabs-foundation-professional-v5-ready \
+            -x '*/node_modules/*' '*/app/dist/*' '*/.git/*'
+
+      - name: Upload verified archive
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: metalabs-foundation-professional-v5.2-CI-VERIFIED
+          path: metalabs-foundation-professional-v5.2-CI-VERIFIED.zip
+          if-no-files-found: error
+          retention-days: 7
